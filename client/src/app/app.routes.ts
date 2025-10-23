@@ -1,8 +1,15 @@
 import { Routes } from '@angular/router';
+import { App } from './app';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./app').then((m) => m.App),
+    redirectTo: 'home',
+    pathMatch: 'full',
+    
+  },
+  {
+    path: 'home',
+    component: App,
   }
 ];
