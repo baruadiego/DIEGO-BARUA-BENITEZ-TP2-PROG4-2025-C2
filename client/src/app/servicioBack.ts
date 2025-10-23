@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { person } from './app';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class backService {
 
 
   getPerson(dni: string): person {
-    const apiUrl = `https://diego-barua-benitez-tp2-prog4-2025-c2.onrender.com/${dni}`;
+    const apiUrl = `${environment.API_URL}/person/${dni}`;
     const response: Observable<any> = this.http.get<any>(apiUrl);
 
 
