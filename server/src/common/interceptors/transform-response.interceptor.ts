@@ -13,9 +13,9 @@ interface ApiResponse<T> {
   message?: string;
   count?: number;
   page?: number;
-  total?: number;
+  totalPages?: number;
   limit?: number;
-  data: T;
+  data?: T;
   timestamp: string;
 }
 
@@ -35,7 +35,8 @@ export class TransformResponseInterceptor<T>
       map((result: any) => {
         const statusCode = response.statusCode ?? 200;
 
-        const data = result?.data ?? result;
+        const data = result?.data;
+
         const message = result?.message ?? 'Success';
 
         const formattedResponse: ApiResponse<T> = {
@@ -44,7 +45,7 @@ export class TransformResponseInterceptor<T>
           message,
           count: Array.isArray(data) ? data.length : undefined,
           page: result?.page,
-          total: result?.total,
+          totalPages: result?.total,
           limit: result?.limit,
           data,
           timestamp: new Date().toISOString(),

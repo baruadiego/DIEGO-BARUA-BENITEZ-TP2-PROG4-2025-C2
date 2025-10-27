@@ -19,9 +19,7 @@ export class App {
   server = inject(backService);
   protected readonly title = signal('client');
 
-  person = signal<person>({});
-
   request() {
-    this.person.set(this.server.getPerson('92000123'));
+    this.server.getPerson('45000123');
   }
 }

@@ -11,8 +11,7 @@ export class backService {
   http = inject(HttpClient);
   person = signal<person>({});
 
-
-  getPerson(dni: string): person {
+  getPerson(dni: string) {
     const apiUrl = `${environment.API_URL}/person/${dni}`;
     const response: Observable<any> = this.http.get<any>(apiUrl);
 
@@ -21,7 +20,5 @@ export class backService {
       this.person.set(data.data);
       subscription.unsubscribe();
     });
-    
-    return this.person();
   }
 }

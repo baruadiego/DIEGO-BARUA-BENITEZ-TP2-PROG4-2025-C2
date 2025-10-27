@@ -1,14 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MongoExceptionFilter } from './common/filters/mongoose-exception/MongoExceptionFilter.filter';
-import { HtppExceptionFilter } from './common/filters/htpp-exception/htpp-exception.filter';
+import { httpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { TransformResponseInterceptor } from './common/interceptors/transform-response.interceptor';
+import { JwtExceptionFilter } from './common/filters/jwt-exception/jwt-exception.filter';
+import  cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalFilters(new MongoExceptionFilter(), new HtppExceptionFilter());
+  app.useGlobalFilters(new JwtExceptionFilter(), new MongoExceptionFilter(), new httpExceptionFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -31,6 +33,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformResponseInterceptor());
 
   app.enableCors();
+
+  app.use(cookieParser())
 
   await app.listen(process.env.PORT ?? 3000);
 }
