@@ -21,13 +21,19 @@ const REFRESH_TOKEN_TIME = 7 * 24 * 60 * 60 * 1000; // 7 días
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post()
+  @UseGuards(AuthCookieGuard)
+  @HttpCode(200)
+  async isAuthenticated(@Res({ passthrough: true }) res: Response) {
+    return { message: 'Authenticated' };
+  }
+
   @Post('login')
   @HttpCode(200)
   async login(
     @Body() loginUserDto: LoginUserDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    this.clearCookies(res);
     const { data, accessToken, refreshToken } = await this.authService.login(loginUserDto);
 
     this.setJwtCookies(res, accessToken, refreshToken);

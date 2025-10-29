@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { backService } from './servicioBack';
+import { RouterOutlet } from "@angular/router";
 
 export type person = {
   dni?: string,
@@ -11,7 +12,7 @@ export type person = {
 @Component({
   selector: 'app-root',
   providers: [],
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

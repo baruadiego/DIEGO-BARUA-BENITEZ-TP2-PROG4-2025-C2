@@ -32,7 +32,12 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new TransformResponseInterceptor());
 
-  app.enableCors();
+  app.enableCors(
+    {
+      origin: process.env.CLIENT_URL,
+      credentials: true,
+    }
+  );
 
   app.use(cookieParser())
 

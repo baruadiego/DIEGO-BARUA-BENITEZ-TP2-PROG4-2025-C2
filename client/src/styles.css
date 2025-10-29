@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0e1113;
+  --color-gradient-one: #193cb8;
+  --color-gradient-two: #8200db;
+  --color-card: #0b163d;
+  --color-card-hover: #0b163d;
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

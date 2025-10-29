@@ -14,6 +14,7 @@ export class CreateUserDto {
   static readonly keys: (keyof CreateUserDto)[] = [
     'email',
     'userName',
+    'imageUrl',
     'role',
   ];
 
@@ -36,9 +37,6 @@ export class CreateUserDto {
   @IsString({ message: 'Password must be a string' })
   @MinLength(8, { message: 'Password must have at least 8 characters' })
   password: string;
-
-  @IsOptional()
-  confirmPassword?: string;
 
   @IsEnum(UserRole, { message: 'Role must be either "admin" or "user"' })
   role?: UserRole;

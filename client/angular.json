@@ -25,7 +25,10 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/custom-theme.scss",
+              "src/styles.css",
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "node_modules/toastify-js/src/toastify.css"
             ]
           },
           "configurations": {
@@ -88,7 +91,9 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "node_modules/toastify-js/src/toastify.css"
             ]
           }
         }

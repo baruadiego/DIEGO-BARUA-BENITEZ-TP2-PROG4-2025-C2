@@ -1,11 +1,5 @@
-<button
-  (click)='request()'
->
-  <h1>conectar back</h1>
-</button>
-
-<div>
-  <p>{{ server.person().name }}</p>
-  <p>{{ server.person().lastname }}</p>
-  <p>{{ server.person().dni }}</p>
+<div class="min-h-screen flex flex-col bg-background">
+  <main class="flex-1 flex flex-col items-stretch justify-center w-full">
+    <router-outlet ></router-outlet>
+  </main>
 </div>
