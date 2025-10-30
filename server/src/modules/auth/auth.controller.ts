@@ -96,7 +96,7 @@ export class AuthController {
     cookieName: 'accessToken' | 'refreshToken',
     time: number,
   ) {
-    const isProd = process.env.NODE_ENV === 'production';
+    const isProd = process.env.ENVIRONMENT === 'production';
 
     res.cookie(cookieName, token, {
       httpOnly: true,
