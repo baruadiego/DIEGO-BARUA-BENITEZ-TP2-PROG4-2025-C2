@@ -11,7 +11,6 @@ import { Mapper } from 'src/common/utils/mapper.util';
 import { sign } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from '../user/dto/login-user.dto';
-import { verify } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {

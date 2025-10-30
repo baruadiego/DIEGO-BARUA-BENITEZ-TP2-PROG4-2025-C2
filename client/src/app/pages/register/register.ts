@@ -64,21 +64,21 @@ export class Register {
   });
 
   formData = new FormGroup({
-    name: new FormControl('diego', [
+    name: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(20),
       Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$'),
     ]),
 
-    lastname: new FormControl('barua', [
+    lastname: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(20),
       Validators.pattern('^[a-zA-ZÀ-ÿ\\s]+$'),
     ]),
 
-    userName: new FormControl('diego03', {
+    userName: new FormControl('', {
       validators: [
         Validators.required,
         Validators.minLength(3),
@@ -89,7 +89,7 @@ export class Register {
       updateOn: 'blur',
     }),
 
-    email: new FormControl('diego@gmail.com', {
+    email: new FormControl('', {
       validators: [
         Validators.required,
         Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
@@ -102,10 +102,10 @@ export class Register {
 
     role: new FormControl('', [Validators.required, Validators.pattern('^(user|admin)$')]),
 
-    description: new FormControl('aaaaaa', [Validators.required, Validators.maxLength(255)]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(255)]),
 
-    password: new FormControl('12345678', [Validators.required, Validators.minLength(8)]),
-    repeatPassword: new FormControl('12345678', [Validators.required, validatePassword]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    repeatPassword: new FormControl('', [Validators.required, validatePassword]),
   });
 
   register() {
