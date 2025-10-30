@@ -1,0 +1,8 @@
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(32, 104, 187) transparent;
+}

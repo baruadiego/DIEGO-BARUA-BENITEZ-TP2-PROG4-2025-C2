@@ -17,10 +17,12 @@ import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material
 import { LOCALE_ID } from '@angular/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import localeEsAr from '@angular/common/locales/es-AR';
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, NgClass } from '@angular/common';
 import { NewUser } from 'src/app/common/types/newUser';
 import { catchError, finalize, map, of } from 'rxjs';
-import { Loader } from "src/app/common/components/loader/loader";
+import { Loader } from 'src/app/common/components/loader/loader';
+import { Logo } from "src/app/common/components/logo/logo";
+import { ToastifyService } from 'src/app/common/services/toastify';
 
 registerLocaleData(localeEsAr);
 
@@ -33,7 +35,9 @@ registerLocaleData(localeEsAr);
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    Loader
+    Loader,
+    Logo,
+    NgClass
 ],
   templateUrl: './register.html',
   styleUrl: './register.css',
@@ -46,9 +50,12 @@ registerLocaleData(localeEsAr);
 export class Register {
   protected auth = inject(Auth);
   protected router = inject(Router);
+  protected toastify = inject(ToastifyService);
+
   loginError = signal<boolean>(false);
   today = new Date();
   checkingIdentifier = signal<boolean>(false);
+  step = signal<number>(1);
 
   validatePassword(control: AbstractControl): ValidationErrors | null {
     const error = { equals: true };
@@ -123,8 +130,8 @@ export class Register {
         Validators.maxLength(20),
         Validators.pattern('^[a-zA-Z0-9._-]+$'),
       ],
-      asyncValidators: this.availableIdentifierValidator(),
-      updateOn: 'blur',
+      // asyncValidators: this.availableIdentifierValidator(),
+      // updateOn: 'blur',
     }),
 
     email: new FormControl('', {
@@ -169,16 +176,15 @@ export class Register {
 
     this.auth.register(newUser).subscribe((success) => {
       if (success) {
+        this.toastify.showToast('Registrado con exito', 3000, 'success');
         this.router.navigate(['/login']);
       } else {
-        this.loginError.set(true);
+        this.toastify.showToast('Ocurrio un error. Intente nuevamente', 3000, 'error');
+      }
+
+      if (this.formData.valid) {
+        this.formData.reset();
       }
     });
-
-    this.formData.reset();
-
-    if (this.formData.valid) {
-      this.formData.reset();
-    }
   }
 }

@@ -4,17 +4,17 @@ import { RouterLink } from '@angular/router';
 import { Auth } from 'src/app/common/services/auth';
 import { Router } from '@angular/router';
 import Toastify from 'toastify-js';
+import { Logo } from "src/app/common/components/logo/logo";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, Logo],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
   protected auth = inject(Auth);
   protected router = inject(Router);
-  
 
   private users = [
     {
@@ -65,11 +65,11 @@ export class Login {
             },
           }).showToast();
         }
-      });
-    }
 
-    if (this.formData.valid) {
-      this.formData.reset();
+        if (this.formData.valid) {
+          this.formData.reset();
+        }
+      });
     }
   }
 

@@ -1,14 +1,42 @@
-<div class="flex flex-col justify-center items-center w-full p-2">
+<div class="flex flex-col justify-center items-center w-full p-4 h-full overflow-y-hidden">
+  <app-logo></app-logo>
+
   <div
-    class="border-8 bg-gray-200 border-transparent rounded-2xl shadow-2xl p-8 m-1 w-full max-w-xl h-full"
+    class="flex flex-col border-8 bg-gray-200 border-transparent rounded-2xl shadow-2xl py-6 m-1 w-full max-w-xl h-full overflow-y-hidden"
   >
     <h1 class="text-3xl font-bold text-center mb-3 uppercase">Registrate</h1>
+
+    <div class="gap-2 flex ml-8">
+      <div
+        class="h-7 w-7 rounded-full flex justify-center items-center mb-2"
+        [ngClass]="{
+          'bg-blue-500': step() === 1,
+          'bg-gray-400': step() !== 1
+        }"
+      >
+        <p class="text-white font-semibold">1</p>
+      </div>
+
+      <div
+        class="h-7 w-7 rounded-full flex justify-center items-center mb-2"
+        [ngClass]="{
+          'bg-blue-500': step() === 2,
+          'bg-gray-400': step() !== 2
+        }"
+      >
+        <p class="text-white font-semibold">2</p>
+      </div>
+    </div>
 
     @if(loginError()){
     <p class="text-[#ba1a1a] text-sm">Credenciales incorrectas.</p>
     }
 
-    <form [formGroup]="formData" class="space-y-4 h-full" (ngSubmit)="register()">
+    <form
+      [formGroup]="formData"
+      class="space-y-4 h-full flex-1 overflow-y-auto px-8"
+      (ngSubmit)="register()"
+    >
       <!-- Nombre -->
       <div>
         <label for="name" class="block mb-2 text-lg font-bold">Nombre</label>
@@ -63,9 +91,8 @@
           placeholder="Nombre de usuario"
         />
         @if (checkingIdentifier()) {
-          <app-loader></app-loader>
-        }
-        @if (formData.controls.userName.touched) { @if
+        <app-loader></app-loader>
+        } @if (formData.controls.userName.touched) { @if
         (formData.controls.userName.errors?.['required']) {
         <p class="text-[#ba1a1a] text-sm">El nombre de usuario es obligatorio.</p>
         } @else if (formData.controls.userName.errors?.['minlength']) {
@@ -95,6 +122,8 @@
         <p class="text-[#ba1a1a] text-sm">El correo es obligatorio.</p>
         } @else if (formData.controls.email.errors?.['pattern']) {
         <p class="text-[#ba1a1a] text-sm">Debe ingresar un correo válido.</p>
+        } @else if (formData.controls.email.errors?.['identifierTaken']) {
+        <p class="text-[#ba1a1a] text-sm">El correo ya esta en uso. Por favor, elige otro.</p>
         } }
       </div>
 
@@ -224,7 +253,7 @@
         type="submit"
         [disabled]="!formData.valid"
       >
-        Registrarse
+        Siguiente
       </button>
 
       <p class="text-center text-gray-800">
