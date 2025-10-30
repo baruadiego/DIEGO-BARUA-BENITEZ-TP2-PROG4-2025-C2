@@ -1,4 +1,4 @@
-<div class="flex flex-col justify-center items-center w-full p-4 h-full overflow-y-hidden">
+<div class="flex flex-col justify-center items-center w-full p-4 h-full overflow-hidden">
   <app-logo></app-logo>
 
   <div
@@ -37,7 +37,8 @@
       class="space-y-4 h-full flex-1 overflow-y-auto px-8"
       (ngSubmit)="register()"
     >
-      <!-- Nombre -->
+      @if (step() === 1) {
+
       <div>
         <label for="name" class="block mb-2 text-lg font-bold">Nombre</label>
         <input
@@ -90,9 +91,7 @@
           type="text"
           placeholder="Nombre de usuario"
         />
-        @if (checkingIdentifier()) {
-        <app-loader></app-loader>
-        } @if (formData.controls.userName.touched) { @if
+        @if (formData.controls.userName.touched) { @if
         (formData.controls.userName.errors?.['required']) {
         <p class="text-[#ba1a1a] text-sm">El nombre de usuario es obligatorio.</p>
         } @else if (formData.controls.userName.errors?.['minlength']) {
@@ -171,26 +170,6 @@
         }
       </div>
 
-      <!-- URL de imagen -->
-      <div>
-        <label for="imageUrl" class="block mb-2 text-lg font-bold">URL de imagen</label>
-        <input
-          id="imageUrl"
-          formControlName="imageUrl"
-          class="border border-black p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300 placeholder-black/70"
-          type="text"
-          placeholder="https://imagen.jpg"
-        />
-        @if (formData.controls.imageUrl.touched) { @if
-        (formData.controls.imageUrl.errors?.['required']) {
-        <p class="text-[#ba1a1a] text-sm">La imagen es obligatoria.</p>
-        } @else if (formData.controls.imageUrl.errors?.['pattern']) {
-        <p class="text-[#ba1a1a] text-sm">
-          Debe ser una URL válida que termine en .jpg, .png, etc.
-        </p>
-        } }
-      </div>
-
       <!-- Descripción -->
       <div>
         <label for="description" class="block mb-2 text-lg font-bold">Descripción</label>
@@ -250,11 +229,74 @@
       <!-- Botón -->
       <button
         class="w-full p-3 mt-4 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold"
-        type="submit"
+        type="button"
+        (click)="nextStep()"
         [disabled]="!formData.valid"
       >
         Siguiente
       </button>
+      } @else {
+
+      <div class="h-[90%] flex flex-col items-center justify-between gap-2">
+        <div class="h-full w-full flex flex-col justify-center items-center gap-4">
+
+          <div
+            class="rounded-full border-4 border-[#194980] h-[150px] w-[150px] 2xl:h-[250px] 2xl:w-[250px]"
+          >
+            <img
+              [src]="imageUrl !== '' ?  imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
+              alt="imagen de perfil"
+              class="h-full w-full rounded-full"
+            />
+          </div>
+  
+          <div class="w-full">
+            <label for="profileImage" class="block text-lg font-bold text-center"
+              >Selecciona tu imagen de perfil</label
+            >
+            <div class="flex justify-between items-center w-full gap-3">
+              <input
+                id="profileImage"
+                [value]="imageName"
+                class="border border-black p-2 shadow-md rounded-lg w-full transition transform duration-300 placeholder-black/70 grow"
+                type="text"
+                readonly
+                placeholder="Selecciona una imagen de perfil"
+              />
+  
+              <input
+                #fileInput
+                type="file"
+                accept=".png,.jpg,.jpeg,.webp"
+                (change)="onFileSelected($event)"
+                hidden
+              />
+              <button
+                class="p-3 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold"
+                type="button"
+                (click)="fileInput.click()"
+              >
+                seleccionar
+              </button>
+            </div>
+        </div>
+
+          @if (formImageData.controls.image.errors?.['invalidType']) {
+          <p class="text-[#ba1a1a] text-sm">Solo se permiten imágenes PNG, JPG o WEBP.</p>
+          } @else if (formImageData.controls.image.errors?.['tooLarge']) {
+          <p class="text-[#ba1a1a] text-sm">El archivo no puede superar los 2 MB.</p>
+          }
+        </div>
+
+        <button
+          class="w-full p-3 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold "
+          type="submit"
+          [disabled]="!formImageData.valid || !formData.valid"
+        >
+          Registrarse
+        </button>
+      </div>
+      }
 
       <p class="text-center text-gray-800">
         ¿Ya tienes una cuenta?

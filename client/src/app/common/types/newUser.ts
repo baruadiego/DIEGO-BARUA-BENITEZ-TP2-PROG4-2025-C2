@@ -6,6 +6,6 @@ export interface NewUser {
   birthDate: string;
   password: string;
   role: string;
-  imageUrl: string;
+  imageUrl?: string;
   description: string;
 }
