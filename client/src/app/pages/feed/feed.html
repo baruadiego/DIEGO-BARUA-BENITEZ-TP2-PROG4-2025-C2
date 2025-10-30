@@ -1,1 +1,8 @@
-<p class="text-3xl text-white">feed works!</p>
+<div class="flex justify-between p-2">
+  <p class="text-3xl text-white">feed works!</p>
+
+  <div class="flex gap-2 cursor-pointer">
+    <i class="bi bi-person-circle text-white text-3xl" (click)="router.navigate(['profile'])"></i>
+    <i class="bi bi-box-arrow-left text-red-400 text-3xl" (click)="logOut()"></i>
+  </div>
+</div>

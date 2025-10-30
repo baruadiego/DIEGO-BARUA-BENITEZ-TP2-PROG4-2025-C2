@@ -67,6 +67,20 @@ export class Auth {
       );
   }
 
+  logOut(): Observable<boolean> {
+    return this.http
+      .post<AuthResponse<User>>(`${environment.API_URL}/auth/logout`, {}, {
+        withCredentials: true,
+      })
+      .pipe(
+        map(() => {
+          this.user.set(null);
+          return true;
+        }),
+        catchError(() => of(false))
+      );
+  }
+
   usernameUsed(username: string): Observable<boolean> {
     return this.http.get<AuthResponse>(`${environment.API_URL}/user/${username}`).pipe(
       map((response) => {
