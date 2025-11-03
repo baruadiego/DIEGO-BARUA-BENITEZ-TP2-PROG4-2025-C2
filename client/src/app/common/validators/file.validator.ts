@@ -10,7 +10,7 @@ export function fileValidator(control: AbstractControl): ValidationErrors | null
     return { invalidType: true };
   }
 
-  const maxSizeMB = 1;
+  const maxSizeMB = 2;
   const maxSizeBytes = maxSizeMB * 1024 * 1024;
   
   if (file.size > maxSizeBytes) {

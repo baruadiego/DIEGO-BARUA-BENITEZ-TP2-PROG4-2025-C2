@@ -23,6 +23,7 @@ import { fileValidator } from 'src/app/common/validators/file.validator';
 import { minAgeValidator } from 'src/app/common/validators/minAge.validator';
 import { validatePassword } from 'src/app/common/validators/password.validator';
 import { availableIdentifierValidator } from 'src/app/common/validators/availableIdentifier.validator';
+import { FileUploader } from 'src/app/common/services/file-uploader';
 
 registerLocaleData(localeEsAr);
 
@@ -51,6 +52,7 @@ export class Register {
   protected auth = inject(Auth);
   protected router = inject(Router);
   protected toastify = inject(ToastifyService);
+  protected fileUploader = inject(FileUploader);
 
   loginError = signal<boolean>(false);
   today = new Date();
@@ -108,17 +110,22 @@ export class Register {
     repeatPassword: new FormControl('', [Validators.required, validatePassword]),
   });
 
-  register() {
-    const data = this.formData.value;
-    const formValues = this.formData.value;
+  async register() {
+    const profileImage = await this.fileUploader.uploadFile(this.formImageData.value.image!, 'profileImages');
 
+    if (!profileImage) {
+      this.toastify.showToast('Ocurrio un error Suiendo la imagem. Intente nuevamente', 3000, 'error');
+    }
+
+    const formValues = this.formData.value;
     const newUser: NewUser = {
       email: formValues.email!,
       name: formValues.name!,
       lastname: formValues.lastname!,
       password: formValues.password!,
       userName: formValues.userName!,
-      imageUrl: this.imageUrl,
+      imageUrl: profileImage!.url,
+      imagePath: profileImage!.path,
       role: formValues.role!,
       description: formValues.description!,
       birthDate: formValues.birthDate!,
@@ -142,6 +149,8 @@ export class Register {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) {
+      this.imageUrl = '';
+      this.imageName = '';
       return;
     }
     this.formImageData.get('image')?.setValue(file);

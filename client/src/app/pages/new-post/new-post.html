@@ -1,0 +1,94 @@
+<div class="p-2 flex-1" [formGroup]="formData">
+  <div class="mx-auto max-w-5xl h-full w-full flex flex-col justify-center items-center text-white">
+    <h1 class="text-3xl font-bold text-start mb-3 uppercase">Nueva publicación</h1>
+
+    <form class="w-full max-w-[600px] space-y-4" (ngSubmit)="createPost()" [formGroup]="formData">
+      <div class="w-full flex flex-col">
+        <label for="title">Título</label>
+
+        <div class="w-full relative">
+          <input
+            id="title"
+            type="text"
+            class="rounded-lg border p-2 w-full placeholder:text-gray-400"
+            placeholder="Título"
+            formControlName="title"
+            maxlength="60"
+          />
+          <p class="absolute right-2 -bottom-1 text-xs pb-2">
+            {{ formData.get('title')?.value?.length || 0 }} / 50
+          </p>
+        </div>
+
+        @if (formData.controls.title.touched) {
+        @if (formData.controls.title.errors?.['required']) {
+        <p class="text-red-400 text-sm">El título es obligatorio.</p>
+        } @else if (formData.controls.title.errors?.['maxlength']) {
+        <p class="text-red-400 text-sm">No debe superar los 50 caracteres.</p>
+        } }
+      </div>
+
+      <div class="w-full flex flex-col">
+        <label for="title">Contenido</label>
+
+        <div class="w-full relative">
+          <textarea
+            id="title"
+            type="text"
+            class="rounded-lg border p-2 w-full placeholder:text-gray-400"
+            placeholder="¿Qué estás pensando?..."
+            formControlName="content"
+            rows="8"
+            maxlength="300"
+          ></textarea>
+
+          <p class="absolute right-2 -bottom-1 text-xs pb-4">
+            {{ formData.get('content')?.value?.length || 0 }} / 280
+          </p>
+        </div>
+
+        @if (formData.controls.content.touched) {
+        @if (formData.controls.content.errors?.['required']) {
+        <p class="text-red-400 text-sm">El contenido es obligatorio.</p>
+        } @else if (formData.controls.content.errors?.['maxlength']) {
+        <p class="text-red-400 text-sm">No debe superar los 300 caracteres.</p>
+        } }
+      </div>
+
+      @if (imageUrl !== '') {
+      <div class="relative">
+        <img [src]="imageUrl" alt="imagen elegida" class="w-full aspect-auto " />
+        <i
+          class="bi bi-x text-xl text-white/60 absolute top-2 right-2 cursor-pointer"
+          (click)="fileInput.value = ''; imageUrl = ''"
+        ></i>
+      </div>
+      }
+      @if (formData.controls.image.errors?.['invalidType']) {
+          <p class="text-[#ba1a1a] text-sm">Solo se permiten imágenes PNG, JPG o WEBP.</p>
+          } @else if (formData.controls.image.errors?.['tooLarge']) {
+          <p class="text-[#ba1a1a] text-sm">El archivo no puede superar los 2 MB.</p>
+          }
+
+      <input
+        #fileInput
+        type="file"
+        accept=".png,.jpg,.jpeg,.webp"
+        (change)="onFileSelected($event)"
+        hidden
+      />
+
+      <i class="bi bi-image text-blue-500 cursor-pointer text-xl" (click)="fileInput.click()">
+        <span><i class="bi bi-plus text-white"></i></span>
+      </i> 
+      <div class="flex justify-end">
+
+        <button 
+          class="p-2 text-white bg-[#194980] rounded-lg enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold"
+          type="submit"
+          [disabled]="!formData.valid"  
+        >publicar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+<div
+  class="h-full flex flex-col py-4 px-6 border-r border-gray-700 text-white gap-3 relative transition-[width] duration-400 ease-in-out"
+  [ngClass]="isOpen() ? 'w-[250px]' : 'w-[10px]'"
+>
+  @if (showContent()) {
+  <div class="flex flex-col gap-1 border-b border-gray-700 pb-4">
+    <p>Publicaciones</p>
+    <button
+      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+      routerLink="/feed"
+    >
+      <i class="bi bi-clock-history text-xl"></i>
+      <p class="text-sm text-gray-300">Más Recientes</p>
+    </button>
+
+    <button
+      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+      routerLink="/feed"
+    >
+      <i class="bi bi-graph-up-arrow text-xl"></i>
+      <p class="text-sm text-gray-300">Tendencias</p>
+    </button>
+
+    <button
+      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+      routerLink="/new-post"
+    >
+      <i class="bi bi-plus-square text-xl"></i>
+      <p class="text-sm text-gray-300">Crear</p>
+    </button>
+  </div>
+
+  <div class="flex flex-col">
+    <p>Administración</p>
+    <button
+      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+      routerLink="/profile"
+    >
+      <i class="bi bi-person-circle text-xl"></i>
+      <p class="text-sm text-gray-300">Mi Perfil</p>
+    </button>
+
+    <button
+      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+    >
+      <i class="bi bi-shield-lock text-xl"></i>
+      <p class="text-sm text-gray-300">Panel de Control</p>
+    </button>
+  </div>
+
+  }
+  <div
+    class="rounded-full border border-gray-700 h-8 w-8 flex items-center justify-center absolute -right-4 bg-background cursor-pointer"
+    (click)="toggle()"
+  >
+    <i class="bi bi-list text-xl"></i>
+  </div>
+</div>

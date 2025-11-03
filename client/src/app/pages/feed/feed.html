@@ -1,8 +1,10 @@
-<div class="flex justify-between p-2">
-  <p class="text-3xl text-white">feed works!</p>
-
-  <div class="flex gap-2 cursor-pointer">
-    <i class="bi bi-person-circle text-white text-3xl" (click)="router.navigate(['profile'])"></i>
-    <i class="bi bi-box-arrow-left text-red-400 text-3xl" (click)="logOut()"></i>
+<div class="p-2 h-full">
+  <div class="mx-auto  w-full max-w-5xl h-full flex flex-col gap-2 items-center justify-center">
+    @for (post of posts(); track $index) {
+      <app-post [data]="post"></app-post>
+    }
+    @if (posts().length === 0) {
+      <h1 class="text-3xl font-bold text-center mb-3 uppercase">No hay publicaciones aún...</h1>
+    }
   </div>
 </div>

@@ -1,4 +1,4 @@
-export interface AuthResponse<T = any> {
+export interface ApiResponse<T = any> {
   statusCode?: number;
   success?: boolean;
   data?: T;

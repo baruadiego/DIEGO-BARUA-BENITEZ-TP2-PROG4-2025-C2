@@ -2,7 +2,6 @@ import {
   IsString,
   IsEmail,
   IsDateString,
-  IsOptional,
   IsEnum,
   MinLength,
   MaxLength,
@@ -46,8 +45,11 @@ export class CreateUserDto {
 
   @IsString({ message: 'Description must be a string' })
   @MaxLength(255, { message: 'Description must not exceed 255 characters' })
-  description?: string;
-
+  description: string;
+  
   @IsString({ message: 'Image URL must be a string' })
-  imageUrl?: string;
+  imageUrl: string;
+  
+  @IsString({ message: 'Image path must be a string' })
+  imagePath: string;
 }

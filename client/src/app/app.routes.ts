@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { App } from './app';
 import { isAuthGuard } from './common/guards/is-auth-guard';
+import { Main } from './layouts/main/main';
 
 export const routes: Routes = [
   {
@@ -9,13 +10,27 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'feed',
-        pathMatch: 'full',
-      },
-      {
-        path: 'feed',
         canActivate: [isAuthGuard],
-        loadComponent: () => import('./pages/feed/feed').then((m) => m.Feed),
+        component: Main,
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'feed',
+          },
+          {
+            path: 'feed',
+            loadComponent: () => import('./pages/feed/feed').then((m) => m.Feed),
+          },
+          {
+            path: 'profile',
+            loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile),
+          },
+          {
+            path: 'new-post',
+            loadComponent: () => import('./pages/new-post/new-post').then((m) => m.NewPost),
+          }
+        ]
       },
       {
         path: 'login',
@@ -24,11 +39,6 @@ export const routes: Routes = [
       {
         path: 'register',
         loadComponent: () => import('./pages/register/register').then((m) => m.Register),
-      },
-      {
-        path: 'profile',
-        canActivate: [isAuthGuard],
-        loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile),
       },
     ],
   },

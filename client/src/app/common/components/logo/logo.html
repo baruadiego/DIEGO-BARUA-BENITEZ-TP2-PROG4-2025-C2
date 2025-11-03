@@ -1,4 +1,17 @@
-<div class="flex gap-2 h-20 items-center mb-4">
-    <img src="favicon_nexo.png" alt="" class="h-full animate-zoom-in">
-    <h1 class="font-sans font-bold text-7xl text-white tracking-in-expand">Nexo</h1>
+<div
+  class="flex gap-2 items-center"
+  [ngClass]="{
+    'h-8': size() === 'sm',
+    'h-15': size() === 'md',
+    'h-20': size() === 'lg'
+  }"
+>
+  <img src="favicon_nexo.png" alt="" class="h-full animate-zoom-in" />
+  <h1 class="font-sans font-bold  text-white tracking-in-expand"
+  [ngClass]="{
+    'text-3xl': size() === 'sm',
+    'text-5xl': size() === 'md',
+    'text-7xl': size() === 'lg'
+  }"
+  >Nexo</h1>
 </div>

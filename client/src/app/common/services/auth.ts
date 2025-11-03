@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable, of, map, Subscription } from 'rxjs';
 import { environment } from '@env/environment';
-import { AuthResponse } from '../types/auth-response';
+import { ApiResponse } from '../types/apiResponse';
 import { User } from '../types/user';
 
 @Injectable({
@@ -28,7 +28,7 @@ export class Auth {
 
   login(identifier: string, password: string): Observable<boolean> {
     return this.http
-      .post<AuthResponse<User>>(
+      .post<ApiResponse<User>>(
         `${environment.API_URL}/auth/login`,
         {
           identifier,
@@ -39,7 +39,8 @@ export class Auth {
       .pipe(
         map((response) => {
           if (response.statusCode === 200 || response.statusCode === 201) {
-            this.user.set(response.data!);
+            localStorage.setItem('user', JSON.stringify(response.data!));
+            
             return true;
           }
 
@@ -51,7 +52,7 @@ export class Auth {
 
   register(user: User): Observable<boolean> {
     return this.http
-      .post<AuthResponse<User>>(`${environment.API_URL}/auth/register`, user, {
+      .post<ApiResponse<User>>(`${environment.API_URL}/auth/register`, user, {
         withCredentials: true,
       })
       .pipe(
@@ -69,7 +70,7 @@ export class Auth {
 
   logOut(): Observable<boolean> {
     return this.http
-      .post<AuthResponse<User>>(`${environment.API_URL}/auth/logout`, {}, {
+      .post<ApiResponse<User>>(`${environment.API_URL}/auth/logout`, {}, {
         withCredentials: true,
       })
       .pipe(
@@ -82,7 +83,7 @@ export class Auth {
   }
 
   usernameUsed(username: string): Observable<boolean> {
-    return this.http.get<AuthResponse>(`${environment.API_URL}/user/${username}`).pipe(
+    return this.http.get<ApiResponse>(`${environment.API_URL}/user/${username}`).pipe(
       map((response) => {
         if (response.statusCode === 200 || response.statusCode === 201) {
           return true;

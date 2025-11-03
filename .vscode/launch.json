@@ -4,7 +4,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug NestJS",
+      "name": "Debug NestJS (ts-node)",
       "skipFiles": ["<node_internals>/**"],
       "runtimeArgs": [
         "--nolazy",
@@ -13,17 +13,16 @@
         "-r",
         "tsconfig-paths/register"
       ],
-      "args": ["${workspaceFolder}/server/src/main.ts"],
+      "args": ["src/main.ts"],
       "cwd": "${workspaceFolder}/server",
       "protocol": "inspector",
       "env": {
-        "TS_NODE_TRANSPILE_ONLY": "true"
+        "TS_NODE_TRANSPILE_ONLY": "true",
+        "NODE_ENV": "development"
       },
       "console": "integratedTerminal",
-      "autoAttachChildProcesses": true,
-      "sourceMaps": true,
       "smartStep": true,
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+      "autoAttachChildProcesses": true
     }
   ]
 }

@@ -6,6 +6,7 @@ export interface NewUser {
   birthDate: string;
   password: string;
   role: string;
-  imageUrl?: string;
+  imageUrl: string;
+  imagePath: string;
   description: string;
 }

@@ -6,6 +6,8 @@ import { PersonModule } from './modules/person/person.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { SupabaseModule } from './modules/supabase/supabase.module';
+import { PostModule } from './modules/post/post.module';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    SupabaseModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

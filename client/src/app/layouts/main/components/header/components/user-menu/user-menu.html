@@ -1,0 +1,25 @@
+@if (!hidden()) {
+  <div 
+    class="w-[300px] bg-[#181C1F] rounded-xl p-2 text-white text-sm space-y-1 shadow-lg scale-in-ver-top" 
+    #menu
+  >
+    <div 
+      class="flex gap-2 cursor-pointer p-2 items-center rounded-md hover:bg-[#252b30] transition-colors duration-200"
+      (click)="router.navigate(['/profile'])"
+    >
+      <app-profile></app-profile>
+      <div class="flex flex-col">
+        <p>Ver perfil</p>
+        <p class="text-gray-400">{{userService.user()?.userName}}</p>
+      </div>
+    </div>
+  
+    <div 
+      class="flex gap-4 items-center cursor-pointer p-2 rounded-md hover:bg-[#252b30] transition-colors duration-200"
+      (click)="logout()"
+    >
+      <i class="bi bi-box-arrow-left text-white text-3xl"></i>
+      <p>Cerrar Sesión</p>
+    </div>
+  </div>
+}

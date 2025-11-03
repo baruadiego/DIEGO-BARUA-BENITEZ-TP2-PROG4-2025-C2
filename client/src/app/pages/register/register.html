@@ -1,5 +1,5 @@
 <div class="flex flex-col justify-center items-center w-full p-4 h-full overflow-hidden">
-  <app-logo></app-logo>
+  <app-logo size="lg" class="mb-4"></app-logo>
 
   <div
     class="flex flex-col border-8 bg-gray-200 border-transparent rounded-2xl shadow-2xl py-6 m-1 w-full max-w-xl h-full overflow-y-hidden"
@@ -239,17 +239,20 @@
 
       <div class="h-[90%] flex flex-col items-center justify-between gap-2">
         <div class="h-full w-full flex flex-col justify-center items-center gap-4">
-
           <div
             class="rounded-full border-4 border-[#194980] h-[150px] w-[150px] 2xl:h-[250px] 2xl:w-[250px]"
           >
             <img
-              [src]="imageUrl !== '' ?  imageUrl : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'"
+              [src]="
+                imageUrl !== ''
+                  ? imageUrl
+                  : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+              "
               alt="imagen de perfil"
               class="h-full w-full rounded-full"
             />
           </div>
-  
+
           <div class="w-full">
             <label for="profileImage" class="block text-lg font-bold text-center"
               >Selecciona tu imagen de perfil</label
@@ -263,7 +266,7 @@
                 readonly
                 placeholder="Selecciona una imagen de perfil"
               />
-  
+
               <input
                 #fileInput
                 type="file"
@@ -279,7 +282,7 @@
                 seleccionar
               </button>
             </div>
-        </div>
+          </div>
 
           @if (formImageData.controls.image.errors?.['invalidType']) {
           <p class="text-[#ba1a1a] text-sm">Solo se permiten imágenes PNG, JPG o WEBP.</p>
@@ -289,7 +292,7 @@
         </div>
 
         <button
-          class="w-full p-3 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold "
+          class="w-full p-3 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold"
           type="submit"
           [disabled]="!formImageData.valid || !formData.valid"
         >

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document, Types, type ObjectId } from 'mongoose';
+import {  Types } from 'mongoose';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -39,6 +39,9 @@ export class User{
 
   @Prop({ required: true })
   imageUrl: string;
+
+  @Prop({ required: true })
+  imagePath: string;
 
   @Prop()
   refreshToken: string;

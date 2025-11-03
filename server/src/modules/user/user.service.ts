@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { Mapper } from 'src/common/utils/mapper.util';
 
 @Injectable()
 export class UserService {
@@ -21,6 +22,7 @@ export class UserService {
       $or: [
         { email: identifier },
         { userName: identifier },
+        { _id: identifier },
       ],
     });
 
@@ -28,7 +30,9 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
 
-    return true;
+    return {
+      data: Mapper.toDto<CreateUserDto>(user, CreateUserDto.keys),
+    };
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
