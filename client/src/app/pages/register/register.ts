@@ -111,10 +111,17 @@ export class Register {
   });
 
   async register() {
-    const profileImage = await this.fileUploader.uploadFile(this.formImageData.value.image!, 'profileImages');
+    const profileImage = await this.fileUploader.uploadFile(
+      this.formImageData.value.image!,
+      'profileImages'
+    );
 
     if (!profileImage) {
-      this.toastify.showToast('Ocurrio un error Suiendo la imagem. Intente nuevamente', 3000, 'error');
+      this.toastify.showToast(
+        'Ocurrio un error Suiendo la imagem. Intente nuevamente',
+        3000,
+        'error'
+      );
     }
 
     const formValues = this.formData.value;
@@ -162,6 +169,12 @@ export class Register {
     }
 
     this.imageUrl = URL.createObjectURL(file);
+  }
+
+  ngOnDestroy() {
+    if (this.imageUrl) {
+      URL.revokeObjectURL(this.imageUrl);
+    }
   }
 
   nextStep() {

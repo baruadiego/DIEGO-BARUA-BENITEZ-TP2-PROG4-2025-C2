@@ -1,0 +1,21 @@
+.heart {
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.heart.liked {
+  color: #e0245e;
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

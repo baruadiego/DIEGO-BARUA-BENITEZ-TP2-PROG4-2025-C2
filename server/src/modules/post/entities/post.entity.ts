@@ -20,6 +20,9 @@ export class Post {
   @Prop()
   imagePath?: string;
 
+  @Prop({ default: [] })
+  likes: string[];
+
   @Prop({ default: 0 })
   likesCount: number;
 

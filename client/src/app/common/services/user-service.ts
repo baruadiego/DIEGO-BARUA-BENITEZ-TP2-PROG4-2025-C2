@@ -9,14 +9,11 @@ import { ApiResponse } from '../types/apiResponse';
   providedIn: 'root',
 })
 export class UserService {
-  user = signal<User | null>(null);
   http = inject(HttpClient);
-  constructor() {
-    this.user.set(JSON.parse(localStorage.getItem('user')!));
-  }
 
   getUser(): User | null {
-    return this.user();
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user;
   }
 
   getUserData(id: string) {

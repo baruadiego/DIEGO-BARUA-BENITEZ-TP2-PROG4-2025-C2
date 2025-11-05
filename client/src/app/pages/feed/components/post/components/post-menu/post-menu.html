@@ -1,0 +1,16 @@
+@if (!hidden()) {
+  <div 
+    class=" bg-[#181C1F] rounded-md p-3 text-white text-sm shadow-lg scale-in-ver-top flex flex-col justify-center gap-1" 
+    #menu
+  >
+    <div class="flex gap-3 items-center cursor-pointer hover:text-red-400" (click)="delete.emit(); hide()">
+      <i class="bi bi-trash text-lg"></i>
+      <p>Eliminar</p>
+    </div>
+
+    <div class="flex gap-3 items-center cursor-pointer hover:text-blue-400" (click)="edit.emit(); hide()">
+      <i class="bi bi-pencil-square text-lg"></i>
+      <p>Editar</p>
+    </div>
+  </div>
+}

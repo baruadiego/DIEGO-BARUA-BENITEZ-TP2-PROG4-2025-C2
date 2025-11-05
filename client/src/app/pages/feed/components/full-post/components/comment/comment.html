@@ -1,0 +1,43 @@
+<div class="flex flex-col gap-2 hover:bg-[#252b30] transition-colors duration-300 p-1 rounded-md">
+  <div class="flex gap-1 items-center">
+    <app-avatar [author]="comment()?.author!" [size]="'sm'"></app-avatar>
+
+    <div class="flex flex-col w-full">
+      <div class="flex justify-between w-full">
+        <div class="flex gap-1 items-center">
+          <p class="text-sm">{{ comment()?.author?.userName }}</p>
+          <p class="text-xl">·</p>
+          <p class="text-gray-300 text-xs">{{ comment()?.createdAt | dateString }}</p>
+        </div>
+
+        @if (isSelfComment()) {
+        <div class="flex flex-col relative items-end">
+          <i class="bi bi-three-dots cursor-pointer" (click)="openMenu()"></i>
+          <app-post-menu
+            class="mt-5 absolute z-999"
+            #postMenu
+            (delete)="deleteComment()"
+            (edit)="editComment()"
+          ></app-post-menu>
+        </div>
+        }
+      </div>
+
+      @if(isModified()){
+      <p class="text-xs text-gray-300">Editado</p>
+      }
+    </div>
+  </div>
+
+  @if(!isEditing()){
+    <p>{{ comment()?.content }}</p>
+  }@else {
+    <textarea 
+      [(ngModel)]="editingContent" 
+      maxlength="180" 
+      #editInput 
+      autofocus
+      (keyup.enter)="updateComment()"
+    ></textarea>
+  }
+</div>

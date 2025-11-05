@@ -39,7 +39,7 @@ export class PostController {
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Query('sortBy', new ValidateSortByPipe(['likesCount', 'createdAt']))
-    sortBy = 'creadtedAt',
+    sortBy = 'createdAt',
     @Query('order') order: 'asc' | 'desc' = 'desc',
   ) {
     return this.postService.findAll(userId, +page, +limit, sortBy, order);
@@ -51,8 +51,26 @@ export class PostController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(200)
   remove(@Param('id') id: string) {
     return this.postService.remove(id);
+  }
+
+  @Put(':id/like')
+  like(
+    @Param('id') postId: string,
+    @Req() req: Request
+  ) {
+    const userId = (req as any).user['id'];
+    return this.postService.like(postId, userId);
+  }
+
+  @Put(':id/unlike')
+  unlike(
+    @Param('id') postId: string,
+    @Req() req: Request
+  ) {
+    const userId = (req as any).user['id'];
+    return this.postService.unlike(postId, userId);
   }
 }

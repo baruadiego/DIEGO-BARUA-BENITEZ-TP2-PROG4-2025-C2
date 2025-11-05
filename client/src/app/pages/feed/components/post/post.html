@@ -1,34 +1,46 @@
-<div class="text-white w-md 2xl:w-xl max-w-[95%] flex flex-col gap-1 border-b border-gray-700 p-4 hover:bg-[#191e22] hover:rounded-xl transition-colors duration-300 ease-in">
-
+<div
+  class="text-white w-md 2xl:w-xl max-w-[95%] flex flex-col gap-1  border-gray-700 p-4 hover:bg-[#191e22] hover:rounded-xl transition-colors duration-300 ease-in"
+  [ngClass]=" {
+    'border-b': !isLastPost()
+  }"
+>
   <div class="flex justify-between items-center">
     <div class="flex items-center gap-2">
-      <app-avatar [author]="data()?.author!"></app-avatar>
-      <p class="text-sm text-gray-300">{{data()?.author?.userName}}</p>
+      <app-avatar [author]="post()?.author!"></app-avatar>
+      <p class="text-sm text-gray-300">{{ post()?.author?.userName }}</p>
     </div>
 
     @if(isSelf()){
-      <i class="bi bi-three-dots text-xl cursor-pointer"></i>
+      <div class="flex flex-col items-end relative">
+        <i class="bi bi-three-dots text-xl cursor-pointer" (click)="openMenu()"></i>
+        <app-post-menu class="mt-5 absolute" #postMenu (delete)="deletePost()"></app-post-menu>
+      </div>
     }
   </div>
 
-  <p class="text-xl font-semibold capitalize">{{data()?.title}}</p>
+  <p class="text-xl font-semibold capitalize">{{ post()?.title }}</p>
 
-  <p class="text-gray-300">{{data()?.content}}</p>
+  <p class="text-gray-300">{{ post()?.content }}</p>
 
-  @if(data()?.imageUrl) {
-  <img [src]="data()?.imageUrl" alt="imagen del post" class="w-full aspect-auto bg-background" />
+  @if(post()?.imageUrl) {
+  <img [src]="post()?.imageUrl" alt="imagen del post" class="w-full aspect-auto bg-background" />
   }
 
   <div class="flex gap-4 items-center pt-3">
     <div class="flex gap-1 items-center">
-      <i class="bi bi-heart cursor-pointer bi-heart-fill hover:text-red-500"></i>
-      <p class="text-sm">{{data()?.likesCount}}</p>
+      @if(isLiked()){
+        <i class="bi cursor-pointer bi-heart-fill text-[#e0245e] heart" (click)="unlike()" [class.liked]="isLiked()" ></i>
+      }@else {
+        <i appLikeToggle class="bi bi-heart cursor-pointer" (click)="like()"></i>
+      }
+      <p class="text-sm">{{ post()?.likesCount }}</p>
     </div>
 
     <div class="flex gap-1 items-center">
       <i class="bi bi-chat cursor-pointer hover:text-blue-500"></i>
-      <p class="text-sm">{{data()?.commentsCount}}</p>
+      <p class="text-sm">{{ post()?.commentsCount }}</p>
     </div>
   </div>
 
+  <p class="text-sm text-gray-400">{{post()?.createdAt | dateString }}</p>
 </div>

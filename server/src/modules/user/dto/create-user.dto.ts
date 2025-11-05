@@ -6,16 +6,21 @@ import {
   MinLength,
   MaxLength,
 } from 'class-validator';
-import { UserRole } from '../entities/user.entity';
+import { User, UserRole } from '../entities/user.entity';
 
 
 export class CreateUserDto {
   static readonly keys: (keyof CreateUserDto)[] = [
+    'name',
+    'lastname',
+    '_id',
     'email',
     'userName',
     'imageUrl',
     'role',
   ];
+
+  _id?: string;
 
   @IsString({ message: 'Name must be a string' })
   @MinLength(2, { message: 'Name must have at least 2 characters' })

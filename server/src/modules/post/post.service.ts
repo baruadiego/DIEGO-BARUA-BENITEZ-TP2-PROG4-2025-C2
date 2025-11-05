@@ -41,8 +41,8 @@ export class PostService {
         model: 'User',
         select: 'userName imageUrl',
       })
-      .limit(limit)
       .sort({ [sortBy]: order === 'desc' ? -1 : 1 })
+      .limit(limit)
       .skip((page - 1) * limit);
 
     const total = Math.ceil(
@@ -53,8 +53,9 @@ export class PostService {
   }
 
   async findOne(id: string) {
-    const post = await this.postModel.findOne({ _id: id, isDeleted: false })
-    .populate({
+    const post = await this.postModel
+      .findOne({ _id: id, isDeleted: false })
+      .populate({
         path: 'author',
         model: 'User',
         select: 'userName imageUrl',
@@ -97,5 +98,93 @@ export class PostService {
     }
 
     return;
+  }
+
+  async like(postId: string, userId: string) {
+    const post = await this.postModel.updateOne(
+      {
+        _id: postId,
+        isDeleted: false,
+        likes: { $ne: userId },
+      },
+      {
+        $addToSet: {
+          likes: userId,
+        },
+        $inc: {
+          likesCount: 1,
+        },
+      },
+    );
+
+    if (post.modifiedCount === 0) {
+      throw new NotFoundException('Post not found or already liked');
+    }
+
+    return { data: post };
+  }
+
+  async unlike(postId: string, userId: string) {
+    const post = await this.postModel.updateOne(
+      {
+        _id: postId,
+        isDeleted: false,
+        likes: { $in: [userId] },
+      },
+      {
+        $pull: {
+          likes: userId,
+        },
+        $inc: {
+          likesCount: -1,
+        },
+      },
+    );
+
+    if (post.modifiedCount === 0) {
+      throw new NotFoundException('Post not found or already unliked');
+    }
+
+    return { data: post };
+  }
+
+  async comment(postId: string) {
+    const post = await this.postModel.updateOne(
+      {
+        _id: postId,
+        isDeleted: false,
+      },
+      {
+        $inc: {
+          commentsCount: 1,
+        },
+      },
+    );
+
+    if (post.modifiedCount === 0) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return { data: post };
+  }
+
+  async unComment(postId: string) {
+    const post = await this.postModel.updateOne(
+      {
+        _id: postId,
+        isDeleted: false,
+      },
+      {
+        $inc: {
+          commentsCount: -1,
+        },
+      },
+    );
+
+    if (post.modifiedCount === 0) {
+      throw new NotFoundException('Post not found');
+    }
+
+    return { data: post };
   }
 }

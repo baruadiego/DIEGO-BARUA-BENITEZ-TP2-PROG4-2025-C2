@@ -1,10 +1,10 @@
-import { Component, inject, ViewChild, viewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FileUploader } from 'src/app/common/services/file-uploader';
 import { PostService } from 'src/app/common/services/post-service';
 import { ToastifyService } from 'src/app/common/services/toastify';
-import { Post } from 'src/app/common/types/post';
+import { NewPost } from 'src/app/common/types/newPost';
 import { fileValidator } from 'src/app/common/validators/file.validator';
 
 type Image = {
@@ -17,7 +17,7 @@ type Image = {
   templateUrl: './new-post.html',
   styleUrl: './new-post.css',
 })
-export class NewPost {
+export class NewPostComponent {
   imageUploader = inject(FileUploader);
   toastService = inject(ToastifyService);
   postService = inject(PostService);
@@ -33,6 +33,12 @@ export class NewPost {
 
   @ViewChild('fileInput') fileInput!: HTMLInputElement;
 
+  ngOnDestroy() {
+    if (this.imageUrl) {
+      URL.revokeObjectURL(this.imageUrl);
+    }
+  }
+
   async createPost() {
     if (this.formData.invalid) {
       return;
@@ -40,7 +46,6 @@ export class NewPost {
 
     let image: Image | null = null;
     if (this.imageUrl) {
-      
       image = await this.imageUploader.uploadFile(this.formData.value.image!, 'postImages');
 
       if (!image) {
@@ -54,7 +59,7 @@ export class NewPost {
     }
 
     const formValues = this.formData.value;
-    const newPost: Post = {
+    const newPost: NewPost = {
       title: formValues.title!,
       content: formValues.content!,
       imageUrl: image?.url,

@@ -4,13 +4,13 @@ import { catchError, Observable, of, map, Subscription } from 'rxjs';
 import { environment } from '@env/environment';
 import { ApiResponse } from '../types/apiResponse';
 import { User } from '../types/user';
+import { NewUser } from '../types/newUser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
   http = inject(HttpClient);
-  user = signal<User | null>(null);
 
   isAuthenticated(): Observable<boolean> {
     return this.http.post<any>(`${environment.API_URL}/auth`, {}, { withCredentials: true }).pipe(
@@ -40,7 +40,7 @@ export class Auth {
         map((response) => {
           if (response.statusCode === 200 || response.statusCode === 201) {
             localStorage.setItem('user', JSON.stringify(response.data!));
-            
+
             return true;
           }
 
@@ -50,15 +50,15 @@ export class Auth {
       );
   }
 
-  register(user: User): Observable<boolean> {
+  register(newUser: NewUser): Observable<boolean> {
     return this.http
-      .post<ApiResponse<User>>(`${environment.API_URL}/auth/register`, user, {
+      .post<ApiResponse<User>>(`${environment.API_URL}/auth/register`, newUser, {
         withCredentials: true,
       })
       .pipe(
         map((response) => {
           if (response.statusCode === 200 || response.statusCode === 201) {
-            this.user.set(response.data!);
+            localStorage.setItem('user', JSON.stringify(response.data!));
             return true;
           }
 
@@ -75,7 +75,7 @@ export class Auth {
       })
       .pipe(
         map(() => {
-          this.user.set(null);
+          localStorage.removeItem('user');
           return true;
         }),
         catchError(() => of(false))

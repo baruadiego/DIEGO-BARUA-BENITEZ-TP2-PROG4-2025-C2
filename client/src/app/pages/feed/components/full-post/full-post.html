@@ -1,0 +1,62 @@
+<div
+  class="bg-black/80 h-screen w-screen absolute top-0 left-0 z-999 flex justify-center items-center text-white overflow-hidden"
+>
+  <div
+    class="absolute top-4 right-4 cursor-pointer rounded-full h-10 w-10 flex items-center justify-center"
+  >
+    <i class="bi bi-x text-white text-2xl"></i>
+  </div>
+
+  <div class="h-[80%] w-[80%] flex items-center">
+    <div class="flex-1 h-full flex items-center justify-center">
+      <img [src]="post()?.imageUrl" alt="" class="h-full aspect-auto" />
+    </div>
+
+    <div class="h-full w-[25%] bg-background p-2 flex flex-col gap-3 overflow-y-auto relative">
+      <div class="flex gap-2 items-center">
+        <app-avatar [author]="post()?.author!" [size]="'md'"></app-avatar>
+        <p class="text-md capitalize">{{ post()?.author?.userName }}</p>
+      </div>
+
+      <div>
+        <p class="text-lg font-semibold capitalize">{{ post()?.title }}</p>
+        <p class="text-gray-300">{{ post()?.content }}</p>
+      </div>
+
+      <div class="flex gap-1 items-center">
+        @if(isLiked()){
+        <i
+          class="bi cursor-pointer bi-heart-fill text-[#e0245e] heart"
+          (click)="unlike()"
+          [class.liked]="isLiked()"
+        ></i>
+        }@else {
+        <i appLikeToggle class="bi bi-heart cursor-pointer" (click)="like()"></i>
+        }
+        <p class="text-sm">{{ post()?.likesCount }}</p>
+      </div>
+      <p class="text-gray-300 text-sm">{{ post()?.createdAt | dateString }}</p>
+
+      <p class="text-center text-gray-300 text-md">{{ post()?.commentsCount }} comentarios</p>
+      <div class="flex flex-col gap-4">
+        @for (comment of comments(); track $index) {
+        <app-comment
+          [data]="comment"
+          [currentUser]="currentUser()"
+          (reload)="updateComments()"
+        ></app-comment>
+        }
+      </div>
+
+      <p></p>
+
+      <input
+        type="text"
+        placeholder="Comentar..."
+        [(ngModel)]="content"
+        class="bg-[#181C1F] rounded-md p-3 text-white text-sm shadow-lg sticky bottom-0 placeholder:text-gray-400"
+        (keyup.enter)="sendComment()"
+      />
+    </div>
+  </div>
+</div>
