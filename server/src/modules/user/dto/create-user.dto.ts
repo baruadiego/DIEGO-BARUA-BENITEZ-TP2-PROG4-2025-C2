@@ -5,6 +5,7 @@ import {
   IsEnum,
   MinLength,
   MaxLength,
+  IsOptional,
 } from 'class-validator';
 import { User, UserRole } from '../entities/user.entity';
 
@@ -20,8 +21,9 @@ export class CreateUserDto {
     'role',
     'description',
   ];
-
-  _id?: string;
+  
+  @IsOptional()
+  _id: string;
 
   @IsString({ message: 'Name must be a string' })
   @MinLength(2, { message: 'Name must have at least 2 characters' })

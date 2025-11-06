@@ -45,7 +45,6 @@ export class AuthController {
     @Body() createUserDto: CreateUserDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    this.clearCookies(res);
     const { data, accessToken, refreshToken } = await this.authService.register(createUserDto);
 
     this.setJwtCookies(res, accessToken, refreshToken);
