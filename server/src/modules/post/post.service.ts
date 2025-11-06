@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -186,5 +185,16 @@ export class PostService {
     }
 
     return { data: post };
+  }
+
+  async activityByUser(userId: string) {
+    console.log(userId);
+    const posts = await this.postModel
+      .countDocuments({ author: userId, isDeleted: false });
+
+    const likes = await this.postModel
+      .countDocuments({ likes: userId, isDeleted: false });
+
+    return {posts, likes};
   }
 }

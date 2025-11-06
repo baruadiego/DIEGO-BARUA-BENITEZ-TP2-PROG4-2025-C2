@@ -18,6 +18,7 @@ export class CreateUserDto {
     'userName',
     'imageUrl',
     'role',
+    'description',
   ];
 
   _id?: string;

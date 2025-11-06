@@ -93,4 +93,9 @@ export class CommentService {
 
     return;
   }
+
+  async commentsByUser(userId: string) {
+    return await this.commentModel
+      .countDocuments({ author: userId, isDeleted: false });
+  }
 }

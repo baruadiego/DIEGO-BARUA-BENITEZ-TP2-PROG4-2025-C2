@@ -69,7 +69,7 @@ export class FullPost {
 
   reload(deleteComment: boolean = false) {
     this.commentService
-      .getComments(this.post()!._id, 1, this.comments().length)
+      .getComments(this.post()!._id, 1, deleteComment ? this.comments().length : this.comments().length + 1)
       .subscribe((res) => {
         if (res) {
           this.comments.set(res.comments);
@@ -126,11 +126,6 @@ export class FullPost {
         if (res) {
           this.content = '';
           this.toastify.showToast('Comentario enviado con exito', 3000, 'success');
-
-          this.post.set({
-            ...this.post()!,
-            commentsCount: this.post()!.commentsCount! + 1,
-          });
           this.reload();
         } else {
           this.toastify.showToast('Error al enviar el comentario', 3000, 'error');

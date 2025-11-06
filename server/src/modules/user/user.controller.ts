@@ -1,24 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PostService } from '../post/post.service';
+import type { Request } from 'express';
+import { AuthCookieGuard } from 'src/common/guards/auth-cookie/auth-cookie.guard';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly postService: PostService
+  ) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @Get('posts')
+  @UseGuards(AuthCookieGuard)
+  getPostByUser(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Req() req: Request
+  ){
+    const id = (req as any).user['id'];
+    return this.postService.findAll(id, page, limit);
   }
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  @Get('activity')
+  @UseGuards(AuthCookieGuard)
+  getUserActivity(
+    @Req() req: Request
+  ){
+    const id = (req as any).user['id'];
+    
+    return this.userService.getActivity(id);
   }
 
   @Get(':identifier')
   findOne(@Param('identifier') identifier: string) {
+    console.log(identifier);
+    
     return this.userService.findOne(identifier);
   }
 

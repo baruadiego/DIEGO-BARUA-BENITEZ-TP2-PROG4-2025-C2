@@ -13,5 +13,6 @@ import { PostModule } from '../post/post.module';
   ],
   controllers: [CommentController],
   providers: [CommentService],
+  exports: [CommentService]
 })
 export class CommentModule {}

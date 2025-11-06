@@ -18,12 +18,44 @@ export class UserService {
 
   getUserData(id: string) {
     return this.http
-      .get<ApiResponse<User>>(`${environment.API_URL}/users/${id}`, { withCredentials: true })
+      .get<ApiResponse<User>>(`${environment.API_URL}/user/${id}`, { withCredentials: true })
       .pipe(
         map((res) => {
           return res.statusCode === 200 || res.statusCode === 201 ? res.data! : null;
         }),
         catchError(() => of(null))
       );
+  }
+
+  getUserPosts(page: number = 1, limit: number = 10) {
+    return this.http
+      .get<ApiResponse>(`${environment.API_URL}/user/posts?page=${page}&limit=${limit}`, { withCredentials: true })
+      .pipe(
+        map((res) => {
+          if(res.statusCode === 200 || res.statusCode === 201){
+            return {
+              posts: res.data,
+              page: res.page,
+              totalPages: res.totalPages
+            }
+          }
+          return  null
+        }),
+        catchError(() => of(null))
+      );
+  }
+
+  getActivity() {
+    return this.http
+      .get<ApiResponse>(`${environment.API_URL}/user/activity`, { withCredentials: true })
+      .pipe(
+        map((res) => {
+          if(res.statusCode === 200 || res.statusCode === 201){
+            return res.data
+          }
+          return  null
+        }),
+        catchError(() => of(null))
+      )
   }
 }

@@ -5,10 +5,16 @@ import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Mapper } from 'src/common/utils/mapper.util';
+import { PostService } from '../post/post.service';
+import { CommentService } from '../comment/comment.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private postService: PostService,
+    private commentService: CommentService
+  ) {}
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
@@ -22,7 +28,6 @@ export class UserService {
       $or: [
         { email: identifier },
         { userName: identifier },
-        { _id: identifier },
       ],
     });
 
@@ -41,5 +46,12 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async getActivity(id: string) {
+    const data = await this.postService.activityByUser(id);
+    const comments = await this.commentService.commentsByUser(id);
+
+    return { data: {likes: data.likes, posts: data.posts, comments} };
   }
 }
