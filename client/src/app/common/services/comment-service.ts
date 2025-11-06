@@ -12,12 +12,21 @@ import { Comment } from '../types/comment';
 export class CommentService {
   http = inject(HttpClient)
 
-  getComments(postId: string): Observable<Comment[]> {
+  getComments(postId: string, page: number = 1, limit: number = 10) {
     return this.http
-      .get<ApiResponse>(`${environment.API_URL}/comment/${postId}`, { withCredentials: true })
+      .get<ApiResponse>(`${environment.API_URL}/comment?postId=${postId}&page=${page}&limit=${limit}`, { withCredentials: true })
       .pipe(
-        map((res) => {return res.statusCode === 200 || res.statusCode === 201 ? res.data! : []}),
-        catchError(() => of([]))
+        map((res) => {
+          if(res.statusCode === 200 || res.statusCode === 201){
+            return {
+              comments: res.data,
+              page: res.page,
+              totalPages: res.totalPages
+            }
+          }
+          return  null
+        }),
+        catchError(() => of(null))
       );
   }
 

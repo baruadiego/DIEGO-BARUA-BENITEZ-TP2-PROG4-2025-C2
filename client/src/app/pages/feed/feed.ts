@@ -15,6 +15,7 @@ export class Feed {
   router = inject(Router);
   postService = inject(PostService);
   posts = signal<Post[]>([]);
+  fullPost = signal<Post | null>(null);
   
   ngOnInit() {
     this.getPosts();
@@ -31,5 +32,14 @@ export class Feed {
 
   IsLastPost(index: number){
     return index === this.posts().length - 1
+  }
+
+  openPost(post: Post){
+    this.fullPost.set(post);
+  }
+
+  closePost(){
+    this.fullPost.set(null);
+    this.getPosts();
   }
 }

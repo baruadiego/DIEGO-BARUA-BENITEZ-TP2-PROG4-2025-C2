@@ -28,6 +28,8 @@ export class PostComponent {
   post = signal<Post | null>(null);
 
   reload = output<void>();
+  openPost = output<Post>();
+
 
   @ViewChild('postMenu', { static: false }) postMenu!: PostMenu;
 
@@ -53,9 +55,10 @@ export class PostComponent {
       this.postService.likePost(this.post()!._id!).subscribe((res) => {
         if (res) {
           this.post()?.likes?.push(this.currentUser()!._id);
+
           this.post.set({
             ...this.post()!,
-            likesCount: this.post()!.likesCount + 1
+            likesCount: this.post()!.likesCount + 1,
           })
         }
       });

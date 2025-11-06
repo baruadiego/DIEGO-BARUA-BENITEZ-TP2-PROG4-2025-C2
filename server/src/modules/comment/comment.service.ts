@@ -26,24 +26,25 @@ export class CommentService {
     return { data: comment };
   }
 
-  async findAll() {
-    const posts = await this.commentModel.find();
-    return { data: posts };
-  }
 
-  async findByPost(id: string, page = 1, limit = 10) {
+  async findAll(postId?: string, page = 1, limit = 10) {
+    const filter = {
+      isDeleted: false,
+    }
+
+    if(postId) {
+      filter['postId'] = postId;
+    }
+
     const comments = await this.commentModel
-      .find({
-        postId: id,
-        isDeleted: false,
-      })
+      .find(filter)
       .populate({
         path: 'author',
         model: 'User',
         select: 'userName imageUrl',
       })
-      .limit(limit)
       .skip((page - 1) * limit)
+      .limit(limit)
       .sort({ createdAt: -1 });
 
     if (comments.length === 0) {
@@ -51,7 +52,7 @@ export class CommentService {
     }
 
     const total = Math.ceil(
-      (await this.commentModel.countDocuments({ postId: id, isDeleted: false })) /
+      (await this.commentModel.countDocuments(filter)) /
         limit,
     );
 

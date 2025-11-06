@@ -4,15 +4,19 @@
   <div
     class="absolute top-4 right-4 cursor-pointer rounded-full h-10 w-10 flex items-center justify-center"
   >
-    <i class="bi bi-x text-white text-2xl"></i>
+    <i class="bi bi-x text-white text-2xl" (click)="close.emit()"></i>
   </div>
 
-  <div class="h-[80%] w-[80%] flex items-center">
-    <div class="flex-1 h-full flex items-center justify-center">
+  <div class="h-[80%] w-fit max-w-[80%] flex items-center">
+    <div class="flex-1 h-full flex items-center justify-end">
       <img [src]="post()?.imageUrl" alt="" class="h-full aspect-auto" />
     </div>
 
-    <div class="h-full w-[25%] bg-background p-2 flex flex-col gap-3 overflow-y-auto relative">
+    <div class="h-full w-min min-w-[250px] 2xl:min-w-[300px] bg-background p-3 flex flex-col gap-3 overflow-y-auto relative"
+      [ngClass]="
+        {'min-w-[500px] 2xl:min-w-[600px]': !post()?.imageUrl}
+      "
+    >
       <div class="flex gap-2 items-center">
         <app-avatar [author]="post()?.author!" [size]="'md'"></app-avatar>
         <p class="text-md capitalize">{{ post()?.author?.userName }}</p>
@@ -43,12 +47,14 @@
         <app-comment
           [data]="comment"
           [currentUser]="currentUser()"
-          (reload)="updateComments()"
+          (reload)="reload($event)"
         ></app-comment>
         }
       </div>
 
-      <p></p>
+      @if(currentPage < totalPages){
+        <button class="text-sm text-center cursor-pointer" (click)="updateComments()">Ver más</button>
+      }
 
       <input
         type="text"

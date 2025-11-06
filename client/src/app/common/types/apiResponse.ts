@@ -4,4 +4,6 @@ export interface ApiResponse<T = any> {
   data?: T;
   message?: string;
   timestamp?: string;
+  page?: number;
+  totalPages?: number;
 }

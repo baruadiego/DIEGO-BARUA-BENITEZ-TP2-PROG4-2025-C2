@@ -6,7 +6,7 @@ export class PostDto {
   title: string;
 
   @IsString({ message: 'Content must be a string' })
-  @MaxLength(255, { message: 'Content must not exceed 255 characters' })
+  @MaxLength(280, { message: 'Content must not exceed 280 characters' })
   content: string;
 
   @IsString({ message: 'Image URL must be a string' })

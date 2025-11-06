@@ -30,7 +30,7 @@ export class CommentComponent {
   data = input<Comment | null>(null);
 
   currentUser = input<User | null>(null);
-  reload = output<void>();
+  reload = output<boolean>();
 
   comment = signal<Comment | null>(null);
   isEditing = signal(false);
@@ -59,7 +59,7 @@ export class CommentComponent {
     this.commentService.deleteComment(this.comment()!._id!).subscribe((res) => {
       if (res) {
         this.toastify.showToast('Comentario eliminado con exito', 3000, 'success');
-        this.reload.emit();
+        this.reload.emit(true);
       } else {
         this.toastify.showToast('Error al eliminar el comentario', 3000, 'error');
       }
@@ -94,7 +94,7 @@ export class CommentComponent {
           this.toastify.showToast('Comentario actualizado con exito', 3000, 'success');
           this.isEditing.set(false);
           this.comment.set({ ...this.comment()!, content: this.editingContent });
-          this.reload.emit();
+          this.reload.emit(false);
         } else {
           this.toastify.showToast('Error al actualizar el comentario', 3000, 'error');
         }
