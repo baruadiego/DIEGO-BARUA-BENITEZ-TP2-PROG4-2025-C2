@@ -23,7 +23,6 @@ export class AuthService {
   ): Promise<{
     data: CreateUserDto;
     accessToken: string;
-    refreshToken: string;
   }> {
     const user = await this.userModel.findOne({
       $or: [
@@ -45,7 +44,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return await this.authorize(user);
+    return {
+      data: Mapper.toDto<CreateUserDto>(user, CreateUserDto.keys),
+      accessToken: this.createToken(user),
+    };
   }
 
   async register(
@@ -53,16 +55,18 @@ export class AuthService {
   ): Promise<{
     data: CreateUserDto;
     accessToken: string;
-    refreshToken: string;
   }> {
     newUser.password = await bcrypt.hash(newUser.password, this.saltRounds);
     const document = new this.userModel(newUser);
     const user = await document.save();
 
-    return await this.authorize(user);
+    return {
+      data: Mapper.toDto<CreateUserDto>(user, CreateUserDto.keys),
+      accessToken: this.createToken(user),
+    }
   }
 
-  createToken(user: User, refresh = false): string {
+  createToken(user: User): string {
     const payload = {
       id: user._id.toString(),
       userName: user.userName,
@@ -71,55 +75,20 @@ export class AuthService {
     };
 
     const token = sign(payload, process.env.JWT_SECRET!, {
-      expiresIn: refresh ? '7d' : '15m',
+      expiresIn: '15m',
     });
 
     return token;
   }
 
-  async authorize(user: User): Promise<{
-    data: CreateUserDto;
-    accessToken: string;
-    refreshToken: string;
-  }> {
-    const refreshToken = this.createToken(user, true).toString();
-    const accessToken = this.createToken(user).toString();
 
-    this.userModel
-      .updateOne(
-        { _id: user._id },
-        { refreshToken: await bcrypt.hash(refreshToken, 10) },
-      )
-      .exec();
+  async refreshToken(id: string) {
+    const user = await this.userModel.findById(id);
 
-    return {
-      data: Mapper.toDto<CreateUserDto>(user, CreateUserDto.keys),
-      accessToken,
-      refreshToken,
-    };
-  }
-
-  async deleteRefreshToken(id: string) {
-    const objectId = new Types.ObjectId(id);
-    await this.userModel.updateOne({ _id: objectId }, { refreshToken: null }).exec();
-  }
-
-  async refreshToken(id: string, refreshToken: string) {
-    const objectId = new Types.ObjectId(id);
-    const user = await this.userModel.findOne({ _id: objectId }).exec();
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    if (!user.refreshToken) {
-      throw new UnauthorizedException('No refresh token stored');
-    }
-
-    const isMatch = await bcrypt.compare(refreshToken, user.refreshToken);
-    if (!isMatch) {
-      throw new UnauthorizedException('Invalid refresh token');
-    }
-
-    return await this.createToken(user, true);
+    return this.createToken(user)
   }
 }

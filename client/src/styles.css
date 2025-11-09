@@ -18,3 +18,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   scrollbar-width: thin;
   scrollbar-color: #ffffff transparent;
 }
+
+.swal-popup {
+  background-color: #161a1b !important;
+  color: #fff !important;
+  border-radius: 1rem !important;
+}
+
+.swal-title {
+  font-size: 1.4rem !important;
+  font-weight: 600 !important;
+  color: #e4e4e4 !important;
+}
+
+.swal-confirm {
+  background-color: #006dd4 !important;
+  color: white !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.swal-deny {
+  background-color: #696969 !important;
+  color: white !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+}

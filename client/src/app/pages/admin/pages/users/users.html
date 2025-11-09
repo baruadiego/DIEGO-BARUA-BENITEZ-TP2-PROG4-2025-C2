@@ -1,0 +1,22 @@
+<div class="w-full h-full flex flex-col justify-between items-center">
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users(); track $index) {
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <app-toggle #{{user.id}}></app-toggle>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

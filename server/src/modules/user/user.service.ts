@@ -19,8 +19,10 @@ export class UserService {
     return 'This action adds a new user';
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    const users = await this.userModel.find();
+
+    return { data:Mapper.toDtoList<CreateUserDto>(users, CreateUserDto.keys) };
   }
 
   async findOne(identifier: string) {

@@ -20,10 +20,10 @@ export class CreateUserDto {
     'imageUrl',
     'role',
     'description',
+    'isActive',
   ];
   
-  @IsOptional()
-  _id: string;
+  _id?: string;
 
   @IsString({ message: 'Name must be a string' })
   @MinLength(2, { message: 'Name must have at least 2 characters' })
@@ -60,4 +60,6 @@ export class CreateUserDto {
   
   @IsString({ message: 'Image path must be a string' })
   imagePath: string;
+
+  isActive?: boolean;
 }

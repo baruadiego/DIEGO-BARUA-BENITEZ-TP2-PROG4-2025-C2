@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
-import { NgClass } from "@angular/common";
-import { RouterLink } from "@angular/router";
+import { Component, inject, signal, ViewChild } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { Renderer2, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,8 +10,12 @@ import { RouterLink } from "@angular/router";
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
+  rendered = inject(Renderer2);
+
   isOpen = signal<boolean>(true);
   showContent = signal<boolean>(true);
+  showAdminRoutes = signal<boolean>(false);
+  toggleIcon = signal<boolean>(false);
 
   toggle() {
     this.isOpen.set(!this.isOpen());
@@ -19,10 +24,23 @@ export class Sidebar {
       setTimeout(() => {
         this.showContent.set(true);
       }, 200);
-    }else{
+    } else {
       this.showContent.set(false);
     }
-
   }
 
+  @ViewChild('adminRoutes', { static: false }) adminRoutes!: ElementRef;
+  toggleAdmin() {
+    this.toggleIcon.set(!this.toggleIcon());
+    
+    if (this.showAdminRoutes()) {
+      this.rendered.addClass(this.adminRoutes.nativeElement, 'scale-out-ver-top');
+
+      setTimeout(() => {
+        this.showAdminRoutes.set(false);
+      }, 1000);
+    } else {
+      this.showAdminRoutes.set(true);
+    }
+  }
 }

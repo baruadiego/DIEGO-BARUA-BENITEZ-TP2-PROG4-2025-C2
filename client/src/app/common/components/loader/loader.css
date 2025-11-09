@@ -1,13 +1,13 @@
 
 svg {
- width: 1.5em;
+ width: 3rem;
  transform-origin: center;
  animation: rotate4 2s linear infinite;
 }
 
 circle {
  fill: none;
- stroke: hsl(214, 97%, 59%);
+ stroke: hsl(214, 7%, 45%);
  stroke-width: 2;
  stroke-dasharray: 1, 200;
  stroke-dashoffset: 0;

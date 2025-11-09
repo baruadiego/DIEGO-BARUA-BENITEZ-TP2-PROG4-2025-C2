@@ -2,19 +2,19 @@
   <div class="flex gap-1 items-center">
     <app-avatar [author]="comment()?.author!" [size]="'sm'"></app-avatar>
 
-    <div class="flex flex-col w-full">
+    <div class="flex flex-col w-full gap-2">
       <div class="flex justify-between w-full">
-        <div class="flex gap-1 items-center">
-          <p class="text-sm">{{ comment()?.author?.userName }}</p>
-          <p class="text-xl">·</p>
-          <p class="text-gray-300 text-xs">{{ comment()?.createdAt | dateString }}</p>
+        <div class="flex gap-1 items-center leading-0">
+          <p class="text-sm leading-0">{{ comment()?.author?.userName }}</p>
+          <p class="text-xl leading-0">·</p>
+          <p class="text-gray-300 text-xs leading-0">{{ comment()?.createdAt | dateString }}</p>
         </div>
 
         @if (isSelfComment()) {
-        <div class="flex flex-col relative justify-center items-end">
+        <div class="flex flex-col relative items-end">
           <i class="bi bi-three-dots cursor-pointer" (click)="openMenu()"></i>
           <app-post-menu
-            class="mt-5 absolute z-999"
+            class="mt-4 absolute z-999"
             #postMenu
             (delete)="deleteComment()"
             (edit)="editComment()"

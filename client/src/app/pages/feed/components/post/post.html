@@ -4,26 +4,25 @@
     'border-b': !isLastPost()
   }"
 >
-  <div class="space-y-1 cursor-pointer" (click)="openPost.emit(post()!)">
-
-    <div class="flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <app-avatar [author]="post()?.author!"></app-avatar>
-        <p class="text-sm text-gray-300">{{ post()?.author?.userName }}</p>
-      </div>
-  
-      @if(isSelf()){
-      <div class="flex flex-col items-end relative">
-        <i class="bi bi-three-dots text-xl cursor-pointer" (click)="openMenu()"></i>
-        <app-post-menu class="mt-5 absolute" #postMenu (delete)="deletePost()"></app-post-menu>
-      </div>
-      }
+  <div class="flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <app-avatar [author]="post()?.author!"></app-avatar>
+      <p class="text-sm text-gray-300">{{ post()?.author?.userName }}</p>
     </div>
-  
+
+    @if(isSelf()){
+    <div class="flex flex-col items-end relative">
+      <i class="bi bi-three-dots text-xl cursor-pointer" (click)="openMenu()"></i>
+      <app-post-menu class="mt-5 absolute" #postMenu (delete)="deletePost()"></app-post-menu>
+    </div>
+    }
+  </div>
+
+  <div class="space-y-1 cursor-pointer" (click)="openPost.emit(post()!)">
     <p class="text-xl font-semibold capitalize">{{ post()?.title }}</p>
-  
+
     <p class="text-gray-300">{{ post()?.content }}</p>
-  
+
     @if(post()?.imageUrl) {
     <img [src]="post()?.imageUrl" alt="imagen del post" class="w-full aspect-auto bg-background" />
     }

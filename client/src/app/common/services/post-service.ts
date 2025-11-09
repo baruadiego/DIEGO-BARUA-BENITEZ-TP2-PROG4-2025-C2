@@ -24,7 +24,7 @@ export class PostService {
     page: number = 1,
     limit: number = 10,
     sortBy: 'likesCount' | 'createdAt' = 'createdAt'
-  ): Observable<Post[]> {
+  ) {
     return this.http
       .get<ApiResponse<Post[]>>(
         `${environment.API_URL}/post?sortBy=${sortBy}&page=${page}&limit=${limit}`,
@@ -32,9 +32,27 @@ export class PostService {
       )
       .pipe(
         map((res) => {
-          return res.statusCode === 200 || res.statusCode === 201 ? res.data! : [];
+          if (res.statusCode === 200 || res.statusCode === 201) {
+            return {
+              posts: res.data,
+              page: res.page,
+              totalPages: res.totalPages,
+            };
+          } else {
+            return {
+              posts: [],
+              page: 1,
+              totalPages: 1,
+            };
+          }
         }),
-        catchError(() => of([]))
+        catchError(() =>
+          of({
+            posts: [],
+            page: 1,
+            totalPages: 1,
+          })
+        )
       );
   }
 

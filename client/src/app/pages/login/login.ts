@@ -1,14 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Auth } from 'src/app/common/services/auth';
 import { Router } from '@angular/router';
 import Toastify from 'toastify-js';
-import { Logo } from "src/app/common/components/logo/logo";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink, Logo],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })

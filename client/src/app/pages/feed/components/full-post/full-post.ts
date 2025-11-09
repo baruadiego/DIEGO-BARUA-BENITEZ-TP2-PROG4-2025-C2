@@ -63,7 +63,6 @@ export class FullPost {
       this.comments.set([...this.comments(), ...res.comments]);
       this.currentPage = res.page!;
       this.totalPages = res.totalPages!;
-      console.log(this.currentPage, this.totalPages);
     });
   }
 

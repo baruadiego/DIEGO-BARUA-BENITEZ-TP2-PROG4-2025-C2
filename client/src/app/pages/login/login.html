@@ -1,57 +1,54 @@
-<div class="flex flex-col justify-center items-center h-full w-full p-2">
-  <app-logo size="lg" class="mb-4"></app-logo>
+<div class="border-8 bg-gray-200 border-transparent rounded-2xl shadow-2xl p-8 m-1 w-full max-w-lg mx-auto">
+  <h1 class="text-3xl font-bold text-center mb-3 uppercase">Inicio de Sesión</h1>
 
-  <div class="border-8 bg-gray-200 border-transparent rounded-2xl shadow-2xl p-8 m-1 w-full max-w-lg">
-    <h1 class="text-3xl font-bold text-center mb-3 uppercase">Inicio de Sesión</h1>
+  <form [formGroup]="formData" class="space-y-4" (ngSubmit)="login()">
+    <div>
+      <label for="email" class="block mb-2 text-lg font-bold">Correo o nombre de usuario</label>
+      <input
+        id="email"
+        formControlName="email"
+        class="border p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300"
+        type="text"
+        placeholder="Correo o nombre de usuario"
+      />
 
-    <form [formGroup]="formData" class="space-y-4" (ngSubmit)="login()">
-      <div>
-        <label for="email" class="block mb-2 text-lg font-bold">Correo o nombre de usuario</label>
-        <input
-          id="email"
-          formControlName="email"
-          class="border p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300"
-          type="text"
-          placeholder="Correo o nombre de usuario"
-        />
-        
-        @if (formData.controls.email.touched){ @if (formData.controls.email.errors?.["required"]) {
-        <p class="text-red-500">El correo o nombre de usuario es obligatorio.</p>
-        } @else if (formData.controls.email.errors?.["minlength"]) {
-        <p class="text-red-500">Debe contener al menos 3 caracteres.</p>
-        } @else if (formData.controls.email.errors?.["maxlength"]) {
-        <p class="text-red-500">No debe superar los 30 caracteres.</p>
-        } }
-      </div>
+      @if (formData.controls.email.touched){ @if (formData.controls.email.errors?.["required"]) {
+      <p class="text-red-500">El correo o nombre de usuario es obligatorio.</p>
+      } @else if (formData.controls.email.errors?.["minlength"]) {
+      <p class="text-red-500">Debe contener al menos 3 caracteres.</p>
+      } @else if (formData.controls.email.errors?.["maxlength"]) {
+      <p class="text-red-500">No debe superar los 30 caracteres.</p>
+      } }
+    </div>
 
-      <div>
-        <label for="password" class="block mb-2 text-lg font-bold">Contraseña</label>
-        <input
-          id="password"
-          formControlName="password"
-          class="border p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300"
-          type="password"
-          placeholder="Contraseña"
-        />
-        @if (formData.controls.password.touched){ @if
-        (formData.controls.password.errors?.["required"]) {
-        <p class="text-red-500">La contraseña es obligatoria.</p>
-        }@else if (formData.controls.password.errors?.["minlength"]) {
-        <p class="text-red-500">La contraseña debe contener al menos 8 caracteres.</p>
-        } }
-      </div>
+    <div>
+      <label for="password" class="block mb-2 text-lg font-bold">Contraseña</label>
+      <input
+        id="password"
+        formControlName="password"
+        class="border p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300"
+        type="password"
+        placeholder="Contraseña"
+      />
+      @if (formData.controls.password.touched){ @if
+      (formData.controls.password.errors?.["required"]) {
+      <p class="text-red-500">La contraseña es obligatoria.</p>
+      }@else if (formData.controls.password.errors?.["minlength"]) {
+      <p class="text-red-500">La contraseña debe contener al menos 8 caracteres.</p>
+      } }
+    </div>
 
-      <button
-        class="w-full p-3 mt-4 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold"
-        type="submit"
-        [disabled]="!this.formData.valid"
-      >
-        Iniciar Sesión
-      </button>
+    <button
+      class="w-full p-3 mt-4 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold"
+      type="submit"
+      [disabled]="!this.formData.valid"
+    >
+      Iniciar Sesión
+    </button>
 
-      <p class="text-center text-gray-800">
-        ¿No tienes una cuenta? <a routerLink="/register" class="text-blue-500 font-bold cursor-pointer">Registrate</a>
-      </p>
-    </form>
-  </div>
+    <p class="text-center text-gray-800">
+      ¿No tienes una cuenta?
+      <a routerLink="/register" class="text-blue-500 font-bold cursor-pointer">Registrate</a>
+    </p>
+  </form>
 </div>

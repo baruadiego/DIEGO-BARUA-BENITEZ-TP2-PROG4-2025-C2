@@ -1,4 +1,4 @@
-<div class="flex flex-col justify-between items-center rounded-full overflow-hidden"
+<div class="flex flex-col justify-center items-center rounded-full overflow-hidden"
 [ngClass]="
   {
     'w-8 h-8': size() === 'sm',
@@ -8,5 +8,5 @@
   }
 "
 >
-  <img [src]="author()?.imageUrl" alt="" class="w-full object-cover" />
+  <img [src]="author()?.imageUrl" alt="" class="h-full object-cover" />
 </div>

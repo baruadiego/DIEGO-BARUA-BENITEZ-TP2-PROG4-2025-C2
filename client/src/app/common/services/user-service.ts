@@ -16,6 +16,17 @@ export class UserService {
     return user;
   }
 
+  getUsers() {
+    return this.http
+      .get<ApiResponse<User[]>>(`${environment.API_URL}/user`, { withCredentials: true })
+      .pipe(
+        map((res) => {
+          return res.statusCode === 200 || res.statusCode === 201 ? res.data! : null;
+        }),
+        catchError(() => of(null))
+      );
+  }
+
   getUserData(id: string) {
     return this.http
       .get<ApiResponse<User>>(`${environment.API_URL}/user/${id}`, { withCredentials: true })

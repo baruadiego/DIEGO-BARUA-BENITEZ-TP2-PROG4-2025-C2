@@ -1,44 +1,51 @@
-<div class="flex flex-col justify-center items-center w-full p-4 h-full overflow-hidden">
-  <app-logo size="lg" class="mb-4"></app-logo>
-
+<div class="h-full w-full flex items-center justify-center overflow-hidden">
   <div
     class="flex flex-col border-8 bg-gray-200 border-transparent rounded-2xl shadow-2xl py-6 m-1 w-full max-w-xl h-full overflow-y-hidden"
   >
-    <h1 class="text-3xl font-bold text-center mb-3 uppercase">Registrate</h1>
-
-    <div class="gap-2 flex ml-8">
-      <div
-        class="h-7 w-7 rounded-full flex justify-center items-center mb-2"
-        [ngClass]="{
-          'bg-blue-500': step() === 1,
-          'bg-gray-400': step() !== 1
-        }"
-      >
-        <p class="text-white font-semibold">1</p>
+    <h1 class="text-3xl font-bold text-center mb-3 uppercase">
+      {{adminRegister()? 'Nuevo usuario' : 'Registrate'}}
+    </h1>
+    
+    <div class="w-full flex justify-between  px-8">
+      <div class="gap-2 flex">
+        <div
+          class="h-7 w-7 rounded-full flex justify-center items-center mb-2"
+          [ngClass]="{
+            'bg-blue-500': step() === 1,
+            'bg-gray-400': step() !== 1
+          }"
+        >
+          <p class="text-white font-semibold">1</p>
+        </div>
+    
+        <div
+          class="h-7 w-7 rounded-full flex justify-center items-center mb-2"
+          [ngClass]="{
+            'bg-blue-500': step() === 2,
+            'bg-gray-400': step() !== 2
+          }"
+        >
+          <p class="text-white font-semibold">2</p>
+        </div>
       </div>
 
-      <div
-        class="h-7 w-7 rounded-full flex justify-center items-center mb-2"
-        [ngClass]="{
-          'bg-blue-500': step() === 2,
-          'bg-gray-400': step() !== 2
-        }"
-      >
-        <p class="text-white font-semibold">2</p>
-      </div>
+      @if(step() === 2){
+        <button
+          class="bg-[#194980] text-white font-bold py-2 px-4 rounded-xl transition hover:scale-105 cursor-pointer duration-300 uppercase"
+          (click)="previousStep()"
+        >
+          volver
+        </button>
+      }
     </div>
-
-    @if(loginError()){
-    <p class="text-[#ba1a1a] text-sm">Credenciales incorrectas.</p>
-    }
-
+  
     <form
       [formGroup]="formData"
       class="space-y-4 h-full flex-1 overflow-y-auto px-8"
       (ngSubmit)="register()"
     >
       @if (step() === 1) {
-
+  
       <div>
         <label for="name" class="block mb-2 text-lg font-bold">Nombre</label>
         <input
@@ -58,7 +65,7 @@
         <p class="text-[#ba1a1a] text-sm">Solo se permiten letras y espacios.</p>
         } }
       </div>
-
+  
       <!-- Apellido -->
       <div>
         <label for="lastname" class="block mb-2 text-lg font-bold">Apellido</label>
@@ -80,14 +87,14 @@
         <p class="text-[#ba1a1a] text-sm">Solo se permiten letras y espacios.</p>
         } }
       </div>
-
+  
       <!-- Nombre de usuario -->
       <div>
         <label for="userName" class="block mb-2 text-lg font-bold">Nombre de usuario</label>
         <input
           id="userName"
           formControlName="userName"
-          class="border border-black p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300 text-black/70"
+          class="border border-black p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300 placeholder:text-black/70"
           type="text"
           placeholder="Nombre de usuario"
         />
@@ -106,14 +113,14 @@
         </p>
         } }
       </div>
-
+  
       <!-- Email -->
       <div>
         <label for="email" class="block mb-2 text-lg font-bold">Correo electrónico</label>
         <input
           id="email"
           formControlName="email"
-          class="border border-black p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300 text-black/70"
+          class="border border-black p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300 placeholder:text-black/70"
           type="text"
           placeholder="Correo electrónico"
         />
@@ -125,11 +132,11 @@
         <p class="text-[#ba1a1a] text-sm">El correo ya esta en uso. Por favor, elige otro.</p>
         } }
       </div>
-
+  
       <!-- Fecha de nacimiento -->
       <div>
         <label for="birthDate" class="block mb-2 text-lg font-bold">Fecha de nacimiento</label>
-
+  
         <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
           <input
             matInput
@@ -144,7 +151,7 @@
           />
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-
+  
           @if(formData.controls.birthDate.hasError('required')){
           <mat-error> La fecha de nacimiento es obligatoria. </mat-error>
           } @if(formData.controls.birthDate.hasError('tooYoung')){
@@ -152,24 +159,26 @@
           }
         </mat-form-field>
       </div>
-
+  
       <!-- Rol -->
-      <div>
-        <label for="role" class="block mb-2 text-lg font-bold">Rol</label>
-        <select
-          id="role"
-          formControlName="role"
-          class="border border-black p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300 placeholder-black/70"
-        >
-          <option value="" disabled>Seleccionar rol</option>
-          <option value="user" class="text-black">Usuario</option>
-          <option value="admin" class="text-black">Administrador</option>
-        </select>
-        @if (formData.controls.role.touched && formData.controls.role.errors?.['required']) {
-        <p class="text-[#ba1a1a] text-sm">Debe seleccionar un rol.</p>
-        }
-      </div>
-
+       @if(adminRegister()){
+         <div>
+           <label for="role" class="block mb-2 text-lg font-bold">Rol</label>
+           <select
+             id="role"
+             formControlName="role"
+             class="border border-black p-3 shadow-md rounded-lg w-full transition transform hover:scale-105 duration-300 placeholder-black/70"
+           >
+             <option value="" disabled>Seleccionar rol</option>
+             <option value="user" class="text-black">Usuario</option>
+             <option value="admin" class="text-black">Administrador</option>
+           </select>
+           @if (formData.controls.role.touched && formData.controls.role.errors?.['required']) {
+           <p class="text-[#ba1a1a] text-sm">Debe seleccionar un rol.</p>
+           }
+         </div>
+       }
+  
       <!-- Descripción -->
       <div>
         <label for="description" class="block mb-2 text-lg font-bold">Descripción</label>
@@ -187,7 +196,7 @@
         <p class="text-[#ba1a1a] text-sm">No debe superar los 255 caracteres.</p>
         } }
       </div>
-
+  
       <!-- Contraseña -->
       <div>
         <label for="password" class="block mb-2 text-lg font-bold">Contraseña</label>
@@ -207,7 +216,7 @@
         <p class="text-[#ba1a1a] text-sm">Debe incluir al menos una mayúscula y un número.</p>
         } }
       </div>
-
+  
       <!-- Repetir contraseña -->
       <div>
         <label for="repeatPassword" class="block mb-2 text-lg font-bold">Repetir contraseña</label>
@@ -225,7 +234,7 @@
         <p class="text-[#ba1a1a] text-sm">Las contraseñas no coinciden.</p>
         } }
       </div>
-
+  
       <!-- Botón -->
       <button
         class="w-full p-3 mt-4 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold"
@@ -236,7 +245,7 @@
         Siguiente
       </button>
       } @else {
-
+  
       <div class="h-[90%] flex flex-col items-center justify-between gap-2">
         <div class="h-full w-full flex flex-col justify-center items-center gap-4">
           <div
@@ -252,7 +261,7 @@
               class="h-full w-full rounded-full"
             />
           </div>
-
+  
           <div class="w-full">
             <label for="profileImage" class="block text-lg font-bold text-center"
               >Selecciona tu imagen de perfil</label
@@ -266,7 +275,7 @@
                 readonly
                 placeholder="Selecciona una imagen de perfil"
               />
-
+  
               <input
                 #fileInput
                 type="file"
@@ -283,14 +292,14 @@
               </button>
             </div>
           </div>
-
+  
           @if (formImageData.controls.image.errors?.['invalidType']) {
           <p class="text-[#ba1a1a] text-sm">Solo se permiten imágenes PNG, JPG o WEBP.</p>
           } @else if (formImageData.controls.image.errors?.['tooLarge']) {
           <p class="text-[#ba1a1a] text-sm">El archivo no puede superar los 2 MB.</p>
           }
         </div>
-
+  
         <button
           class="w-full p-3 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold"
           type="submit"
@@ -300,11 +309,13 @@
         </button>
       </div>
       }
-
-      <p class="text-center text-gray-800">
-        ¿Ya tienes una cuenta?
-        <a routerLink="/login" class="text-blue-500 font-bold cursor-pointer">Iniciar sesión</a>
-      </p>
+  
+      @if (!adminRegister()) {
+        <p class="text-center text-gray-800">
+          ¿Ya tienes una cuenta?
+          <a routerLink="/login" class="text-blue-500 font-bold cursor-pointer">Iniciar sesión</a>
+        </p>
+      }
     </form>
   </div>
 </div>

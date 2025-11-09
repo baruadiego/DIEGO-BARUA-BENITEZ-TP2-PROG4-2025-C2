@@ -188,7 +188,6 @@ export class PostService {
   }
 
   async activityByUser(userId: string) {
-    console.log(userId);
     const posts = await this.postModel
       .countDocuments({ author: userId, isDeleted: false });
 

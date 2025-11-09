@@ -1,3 +1,4 @@
+
 @if (fullPost()) {
   <app-full-post [data]="fullPost()" (close)="closePost()"></app-full-post>
 }
@@ -13,7 +14,15 @@
       ></app-post>
     }
     @if (posts().length === 0) {
-      <h1 class="text-3xl font-bold text-center mb-3 uppercase">No hay publicaciones aún...</h1>
+      <app-loader></app-loader>
+    }
+
+    <div #sentinel></div>
+    @if(currentPage < totalPages || currentPage === 0){
+      <div class="mb-2">
+        <app-loader></app-loader>
+      </div>
     }
   </div>
+
 </div>

@@ -1,29 +1,67 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, Observable, of, map, Subscription } from 'rxjs';
+import { catchError, Observable, of, map, Subscription, timer } from 'rxjs';
 import { environment } from '@env/environment';
 import { ApiResponse } from '../types/apiResponse';
 import { User } from '../types/user';
 import { NewUser } from '../types/newUser';
+import Swal from 'sweetalert2';
+import { ToastifyService } from './toastify';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth {
   http = inject(HttpClient);
+  toast = inject(ToastifyService);
+  private refreshSubscription!: Subscription;
+  REFRESH_TIMER = 60000 * 10; // 10 minutos
+
+  throwRefreshTimer() {
+    this.refreshSubscription?.unsubscribe();
+    this.refreshSubscription = timer(this.REFRESH_TIMER).subscribe(() => {
+      Swal.fire({
+        title: 'Su sesión caduca en 5 minutos ¿Desea extenderla?',
+        showDenyButton: true,
+        confirmButtonText: 'Extender',
+        denyButtonText: `No extender`,
+        customClass: {
+          popup: 'swal-popup',
+          title: 'swal-title',
+          confirmButton: 'swal-confirm',
+          denyButton: 'swal-deny',
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.refreshToken().subscribe((res) => {
+            if (res) {
+              console.log('a');
+
+              this.throwRefreshTimer();
+              this.toast.showToast('Sesión extendida con exito', 3000, 'success');
+            }
+          });
+        }
+      });
+    });
+  }
 
   isAuthenticated(): Observable<boolean> {
-    return this.http.post<any>(`${environment.API_URL}/auth`, {}, { withCredentials: true }).pipe(
-      map((res) => res.statusCode === 200),
-      catchError(() =>
-        this.http
-          .post<any>(`${environment.API_URL}/auth/refresh`, {}, { withCredentials: true })
-          .pipe(
-            map((res) => res.statusCode === 201 || res.statusCode === 200),
-            catchError(() => of(false))
-          )
-      )
-    );
+    return this.http
+      .post<ApiResponse<User>>(`${environment.API_URL}/auth`, {}, { withCredentials: true })
+      .pipe(
+        map((res) => res.statusCode === 200),
+        catchError(() => of(false))
+      );
+  }
+
+  refreshToken(): Observable<boolean> {
+    return this.http
+      .post<ApiResponse<any>>(`${environment.API_URL}/auth/refresh`, {}, { withCredentials: true })
+      .pipe(
+        map((res) => res.statusCode === 200 || res.statusCode === 201),
+        catchError(() => of(false))
+      );
   }
 
   login(identifier: string, password: string): Observable<boolean> {
@@ -40,7 +78,7 @@ export class Auth {
         map((response) => {
           if (response.statusCode === 200 || response.statusCode === 201) {
             localStorage.setItem('user', JSON.stringify(response.data!));
-
+            this.throwRefreshTimer();
             return true;
           }
 
@@ -70,12 +108,17 @@ export class Auth {
 
   logOut(): Observable<boolean> {
     return this.http
-      .post<ApiResponse<User>>(`${environment.API_URL}/auth/logout`, {}, {
-        withCredentials: true,
-      })
+      .post<ApiResponse<User>>(
+        `${environment.API_URL}/auth/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
       .pipe(
         map(() => {
           localStorage.removeItem('user');
+          this.refreshSubscription.unsubscribe();
           return true;
         }),
         catchError(() => of(false))
@@ -92,5 +135,9 @@ export class Auth {
       }),
       catchError(() => of(false))
     );
+  }
+
+  ngOnDestroy() {
+    this.refreshSubscription?.unsubscribe();
   }
 }

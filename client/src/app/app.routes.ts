@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { App } from './app';
 import { isAuthGuard } from './common/guards/is-auth-guard';
 import { Main } from './layouts/main/main';
+import { Auth } from './layouts/auth/auth';
 
 export const routes: Routes = [
   {
@@ -10,41 +11,24 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        pathMatch: 'full',
+        redirectTo: 'redirect',
+      },
+      {
+        path: '',
         canActivate: [isAuthGuard],
         component: Main,
-        children: [
-          {
-            path: '',
-            pathMatch: 'full',
-            redirectTo: 'feed',
-          },
-          {
-            path: 'feed',
-            loadComponent: () => import('./pages/feed/feed').then((m) => m.Feed),
-          },
-          {
-            path: 'feed/trends',
-            loadComponent: () => import('./pages/feed/feed').then((m) => m.Feed),
-          },
-          {
-            path: 'profile',
-
-            loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile),
-          },
-          {
-            path: 'new-post',
-            loadComponent: () => import('./pages/new-post/new-post').then((m) => m.NewPostComponent),
-          }
-        ]
+        loadChildren: () => import('./layouts/main/main.routes').then((m) => m.mainRoutes)
       },
       {
-        path: 'login',
-        loadComponent: () => import('./pages/login/login').then((m) => m.Login),
+        path: '',
+        component: Auth,
+        loadChildren: () => import('./layouts/auth/auth.routes').then((m) => m.routes)
       },
       {
-        path: 'register',
-        loadComponent: () => import('./pages/register/register').then((m) => m.Register),
-      },
+        path: 'redirect',
+        loadComponent: () => import('./pages/redirect/redirect').then((m) => m.Redirect),
+      }
     ],
   },
 ];

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Res, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get,  Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PostService } from '../post/post.service';
 import type { Request } from 'express';
 import { AuthCookieGuard } from 'src/common/guards/auth-cookie/auth-cookie.guard';
+import { AdminGuard } from 'src/common/guards/admin/admin.guard';
 
 @Controller('user')
 export class UserController {
@@ -35,9 +36,13 @@ export class UserController {
 
   @Get(':identifier')
   findOne(@Param('identifier') identifier: string) {
-    console.log(identifier);
-    
     return this.userService.findOne(identifier);
+  }
+
+  @Get()
+  @UseGuards(AuthCookieGuard, AdminGuard)
+  findAll() {
+    return this.userService.findAll();
   }
 
   @Patch(':id')
