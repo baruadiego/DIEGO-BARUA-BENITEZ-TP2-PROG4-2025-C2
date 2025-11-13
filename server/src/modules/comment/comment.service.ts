@@ -5,6 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment } from './entities/comment.entity';
 import { PostService } from '../post/post.service';
+import { StatDto } from '../statics/dto/stat.dto';
+import { makeGroupBy, makeResponse } from 'src/common/helpers/stats.helper';
 
 @Injectable()
 export class CommentService {
@@ -98,4 +100,40 @@ export class CommentService {
     return await this.commentModel
       .countDocuments({ author: userId, isDeleted: false });
   }
+
+  async countCommentsByPeriod(statDto: StatDto) {
+      const timezoneOffset = -3;
+      const groupBy = makeGroupBy(statDto.groupBy);
+  
+      let match = {};
+      if (statDto.userId) {
+        match = { ...match, author: statDto.userId };
+      }
+  
+      const posts = await this.commentModel.aggregate([
+        { $match: match },
+        {
+          $addFields: {
+            localCreatedAt: {
+              $dateAdd: {
+                startDate: '$createdAt',
+                unit: 'hour',
+                amount: timezoneOffset,
+              },
+            },
+          },
+        },
+        {
+          $group: {
+            _id: groupBy,
+            total: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ]);
+  
+      const result = makeResponse(posts, statDto.groupBy, statDto.startDate, statDto.endDate);
+  
+      return { data: result };
+    }
 }

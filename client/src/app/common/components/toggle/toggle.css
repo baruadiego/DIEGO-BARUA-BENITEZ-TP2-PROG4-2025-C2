@@ -17,7 +17,7 @@
   width: 50px;
   height: 25px;
   border-radius: 50px;
-  background: linear-gradient(to bottom, #ff0000, #801717);
+  background: linear-gradient(to bottom, #949393, #444444);
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -36,7 +36,7 @@
 }
 
 .checkbox-apple input[type="checkbox"]:checked + label {
-  background: linear-gradient(to bottom, #4cd964, #079b20);
+  background: linear-gradient(to bottom, #26a1f3, #074c9b);
 }
 
 .checkbox-apple input[type="checkbox"]:checked + label:after {

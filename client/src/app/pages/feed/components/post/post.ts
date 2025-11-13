@@ -46,6 +46,10 @@ export class PostComponent {
     return this.currentUser()?.userName === this.post()?.author?.userName;
   }
 
+  isAdmin(): boolean {
+    return this.currentUser()?.role === 'admin';
+  }
+
   isLiked(): boolean {
     return this.post()!.likes!.includes(this.currentUser()!._id);
   }

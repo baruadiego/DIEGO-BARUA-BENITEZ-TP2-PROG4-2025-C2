@@ -45,25 +45,7 @@ export class Login {
       this.auth.login(data.email, data.password).subscribe((success) => {
         if (success) {
           this.router.navigate(['/feed']);
-        } else {
-          Toastify({
-            text: 'Credenciales inválidas',
-            duration: 3000,
-            close: true,
-            gravity: 'top',
-            position: 'right',
-            stopOnFocus: true,
-            style: {
-              background: 'linear-gradient(135deg, #ff4b4b, #ff6b6b)',
-              color: '#fff',
-              fontWeight: '600',
-              borderRadius: '10px',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-              padding: '14px 18px',
-              fontSize: '15px',
-            },
-          }).showToast();
-        }
+        } 
 
         if (this.formData.valid) {
           this.formData.reset();

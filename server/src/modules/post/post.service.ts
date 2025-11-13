@@ -1,11 +1,16 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PostDto } from './dto/post.dto';
 import { Model } from 'mongoose';
 import { Post } from './entities/post.entity';
 import { InjectModel } from '@nestjs/mongoose';
+import { StatDto } from '../statics/dto/stat.dto';
+import { GroupBy } from '../statics/dto/stat.dto';
+import {
+  dias,
+  makeGroupBy,
+  makeResponse,
+  meses,
+} from 'src/common/helpers/stats.helper';
 
 @Injectable()
 export class PostService {
@@ -188,12 +193,52 @@ export class PostService {
   }
 
   async activityByUser(userId: string) {
-    const posts = await this.postModel
-      .countDocuments({ author: userId, isDeleted: false });
+    const posts = await this.postModel.countDocuments({
+      author: userId,
+      isDeleted: false,
+    });
 
-    const likes = await this.postModel
-      .countDocuments({ likes: userId, isDeleted: false });
+    const likes = await this.postModel.countDocuments({
+      likes: userId,
+      isDeleted: false,
+    });
 
-    return {posts, likes};
+    return { posts, likes };
+  }
+
+  async countPostsByPeriod(statDto: StatDto) {
+    const timezoneOffset = -3;
+    const groupBy = makeGroupBy(statDto.groupBy);
+
+    let match = {};
+    if (statDto.postId) {
+      match = {postId: statDto.postId};
+    }
+
+    const posts = await this.postModel.aggregate([
+      { $match: match },
+      {
+        $addFields: {
+          localCreatedAt: {
+            $dateAdd: {
+              startDate: '$createdAt',
+              unit: 'hour',
+              amount: timezoneOffset,
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: groupBy,
+          total: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    const result = makeResponse(posts, statDto.groupBy, statDto.startDate, statDto.endDate);
+
+    return { data: result };
   }
 }

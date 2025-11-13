@@ -9,7 +9,7 @@
       <app-post 
         [data]="post" 
         [isLastPost]="IsLastPost($index)" 
-        (reload)="getPosts()"
+        (reload)="reload()"
         (openPost)="openPost($event)"
       ></app-post>
     }

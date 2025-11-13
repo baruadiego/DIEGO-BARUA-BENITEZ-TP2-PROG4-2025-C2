@@ -1,22 +1,51 @@
-<div class="w-full h-full flex flex-col justify-between items-center">
-  <table>
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (user of users(); track $index) {
+<div class="w-full h-full flex flex-col items-center justify-start bg-background p-6 text-gray-200">
+  <div class="w-full max-w-6xl flex justify-end pb-2">
+    <button class="p-2 text-white bg-[#194980] rounded-lg enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold" routerLink="/admin/register">Nuevo Usuario</button>
+  </div>
+  <div class="w-full max-w-6xl overflow-x-auto rounded-2xl shadow-lg bg-[#101418] border border-gray-700">
+    <table class="w-full border-collapse text-left">
+      <thead class="bg-[#16202a] text-gray-300 uppercase text-sm">
         <tr>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>
-            <app-toggle #{{user.id}}></app-toggle>
-          </td>
+          <th class="py-4 px-6 font-semibold">Nombre</th>
+          <th class="py-4 px-6 font-semibold">Apellido</th>
+          <th class="py-4 px-6 font-semibold">Username</th>
+          <th class="py-4 px-6 font-semibold">Correo</th>
+          <th class="py-4 px-6 font-semibold">Rol</th>
+          <th class="py-4 px-6 font-semibold text-center">Activo</th>
         </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+
+      <tbody>
+        @for (user of users(); track $index) {
+          <tr
+            class="hover:bg-[#1a2430] transition duration-200 border-b border-gray-700 last:border-none"
+          >
+            <td class="py-3 px-6">{{ user.name }}</td>
+            <td class="py-3 px-6">{{ user.lastname }}</td>
+            <td class="py-3 px-6 font-semibold text-[#60a5fa]">@{{ user.userName }}</td>
+            <td class="py-3 px-6">{{ user.email }}</td>
+
+            <td class="py-3 px-6">
+              <select
+                [value]="user.role"
+                class="bg-background border border-gray-600 w-full text-gray-200 text-sm rounded-lg p-2 outline-none focus:ring-2 focus:ring-[#60a5fa] cursor-pointer"
+                (change)="changeRole(user._id, $event)"
+              >
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </select>
+            </td>
+
+            <td class="py-3 px-6 text-center">
+              <app-toggle
+                [id]="user._id"
+                [checked]="user.isActive"
+                (action)="toggleAction($event.id, $event.action)"
+              ></app-toggle>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>

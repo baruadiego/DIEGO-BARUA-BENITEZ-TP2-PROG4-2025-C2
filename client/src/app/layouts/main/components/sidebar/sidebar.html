@@ -40,47 +40,50 @@
       <p class="text-sm text-gray-300">Mi Perfil</p>
     </button>
 
-    <button
-      class="flex items-center justify-between hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
-      (click)="toggleAdmin()"
-    >
-      <div class="flex gap-4 items-center">
-        <i class="bi bi-shield-lock text-xl"></i>
-        <p class="text-sm text-gray-300">Panel de Control</p>
-      </div>
-
-      <i class="bi bi-chevron-down text-xs transition-transform duration-300 ease-in-out"
-        [class.rotate-180]="toggleIcon()"
-        [class.rotate-0]="!toggleIcon()"
-      ></i>
-    </button>
-
-    @if(showAdminRoutes()){
-      <div class="pl-4 w-full scale-in-ver-top" #adminRoutes>
-        <button
-          class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
-          routerLink="/admin/users"
-        >
-          <i class="bi bi-people-fill text-xl"></i>
-          <p class="text-sm text-gray-300">Usuarios</p>
-        </button>
+    @if(currentUser?.role === 'admin') {
+      
+      <button
+        class="flex items-center justify-between hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+        (click)="toggleAdmin()"
+      >
+        <div class="flex gap-4 items-center">
+          <i class="bi bi-shield-lock text-xl"></i>
+          <p class="text-sm text-gray-300">Panel de Control</p>
+        </div>
   
-        <button
-          class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
-          routerLink="/admin/register"
-        >
-          <i class="bi bi-person-plus-fill text-xl"></i>
-          <p class="text-sm text-gray-300">Nuevo Usuario</p>
-        </button>
+        <i class="bi bi-chevron-down text-xs transition-transform duration-300 ease-in-out"
+          [class.rotate-180]="toggleIcon()"
+          [class.rotate-0]="!toggleIcon()"
+        ></i>
+      </button>
   
-        <button
-          class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
-          routerLink="/admin/stats"
-        >
-          <i class="bi bi-bar-chart-line-fill text-xl"></i>
-          <p class="text-sm text-gray-300">Estadisticas</p>
-        </button>
-      </div>
+      @if(showAdminRoutes()){
+        <div class="pl-4 w-full scale-in-ver-top" #adminRoutes>
+          <button
+            class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
+            routerLink="/admin/users"
+          >
+            <i class="bi bi-people-fill text-xl"></i>
+            <p class="text-sm text-gray-300">Usuarios</p>
+          </button>
+    
+          <button
+            class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
+            routerLink="/admin/register"
+          >
+            <i class="bi bi-person-plus-fill text-xl"></i>
+            <p class="text-sm text-gray-300">Nuevo Usuario</p>
+          </button>
+    
+          <button
+            class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
+            routerLink="/admin/stats"
+          >
+            <i class="bi bi-bar-chart-line-fill text-xl"></i>
+            <p class="text-sm text-gray-300">Estadisticas</p>
+          </button>
+        </div>
+      }
     }
   </div>
 

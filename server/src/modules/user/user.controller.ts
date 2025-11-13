@@ -1,4 +1,16 @@
-import { Controller, Get,  Body, Patch, Param, Delete, Query, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+  Req,
+  Post,
+  BadRequestException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PostService } from '../post/post.service';
@@ -10,7 +22,7 @@ import { AdminGuard } from 'src/common/guards/admin/admin.guard';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly postService: PostService
+    private readonly postService: PostService,
   ) {}
 
   @Get('posts')
@@ -18,19 +30,17 @@ export class UserController {
   getPostByUser(
     @Query('page') page = 1,
     @Query('limit') limit = 10,
-    @Req() req: Request
-  ){
+    @Req() req: Request,
+  ) {
     const id = (req as any).user['id'];
     return this.postService.findAll(id, page, limit);
   }
 
   @Get('activity')
   @UseGuards(AuthCookieGuard)
-  getUserActivity(
-    @Req() req: Request
-  ){
+  getUserActivity(@Req() req: Request) {
     const id = (req as any).user['id'];
-    
+
     return this.userService.getActivity(id);
   }
 
@@ -51,7 +61,23 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthCookieGuard, AdminGuard)
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(id);
+  }
+
+  @Post(':id/enable')
+  @UseGuards(AuthCookieGuard, AdminGuard)
+  enable(@Param('id') id: string) {
+    return this.userService.enable(id);
+  }
+
+  @Patch(':id/change-role')
+  @UseGuards(AuthCookieGuard, AdminGuard)
+  changeRole(@Param('id') id: string, @Body('role') role: 'admin' | 'user') {
+    if (role !== 'admin' && role !== 'user') {
+      throw new BadRequestException('Invalid role');
+    }
+    return this.userService.changeRole(id, role);
   }
 }

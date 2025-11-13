@@ -31,7 +31,7 @@ export class Feed {
   ngAfterViewInit() {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        if (this.currentPage >= this.totalPages) {
+        if ((this.currentPage >= this.totalPages) && this.currentPage !== 1) {
           return;
         }
 
@@ -65,15 +65,13 @@ export class Feed {
     const lastSegment = this.router.url.split('/').pop();
     const sortBy = lastSegment === 'trends' ? 'likesCount' : 'createdAt';
 
-    const response = this.postService.getAllPosts(this.currentPage, this.postsPerPage, sortBy);
+    const response = this.postService.getAllPosts(1, this.posts().length, sortBy);
     response.subscribe((response) => {
       if (!response) {
         return;
       }
-
+      
       this.posts.set(response.posts!);
-      this.totalPages = response.totalPages!;
-      this.currentPage = response.page!;
     });
   }
 

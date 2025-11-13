@@ -2,6 +2,7 @@ import { Component, inject, signal, ViewChild } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Renderer2, ElementRef } from '@angular/core';
+import { UserService } from 'src/app/common/services/user-service';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,11 +12,13 @@ import { Renderer2, ElementRef } from '@angular/core';
 })
 export class Sidebar {
   rendered = inject(Renderer2);
+  userService = inject(UserService)
 
   isOpen = signal<boolean>(true);
   showContent = signal<boolean>(true);
   showAdminRoutes = signal<boolean>(false);
   toggleIcon = signal<boolean>(false);
+  currentUser = this.userService.getUser();
 
   toggle() {
     this.isOpen.set(!this.isOpen());

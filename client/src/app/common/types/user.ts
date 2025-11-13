@@ -7,4 +7,5 @@ export interface User {
   imageUrl?: string;
   role: string;
   description: string;
+  isActive: boolean;
 }

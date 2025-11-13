@@ -1,4 +1,6 @@
 import {
+  ForbiddenException,
+  HttpException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -33,6 +35,10 @@ export class AuthService {
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (!user.isActive) {
+      throw new ForbiddenException('User is not active');
     }
 
     const isPasswordValid = await bcrypt.compare(

@@ -10,7 +10,7 @@
       <p class="text-sm text-gray-300">{{ post()?.author?.userName }}</p>
     </div>
 
-    @if(isSelf()){
+    @if(isSelf() || isAdmin()) {
     <div class="flex flex-col items-end relative">
       <i class="bi bi-three-dots text-xl cursor-pointer" (click)="openMenu()"></i>
       <app-post-menu class="mt-5 absolute" #postMenu (delete)="deletePost()"></app-post-menu>

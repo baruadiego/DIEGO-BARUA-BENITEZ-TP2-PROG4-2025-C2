@@ -47,6 +47,10 @@ export class CommentComponent {
     return this.comment()?.author?._id === this.currentUser()?._id;
   }
 
+  isAdmin(): boolean {
+    return this.currentUser()?.role === 'admin';
+  }
+
   isModified(): boolean {
     return this.comment()?.createdAt !== this.comment()?.updatedAt;
   }

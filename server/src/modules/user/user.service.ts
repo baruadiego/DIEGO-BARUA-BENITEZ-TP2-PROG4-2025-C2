@@ -46,8 +46,14 @@ export class UserService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const user = await this.userModel.findOneAndUpdate({ _id: id, isActive: true }, { isActive: false }, { new: true });
+    
+    if (!user) {
+      throw new NotFoundException('User not found or already deleted');
+    }
+
+    return { message: 'User deleted successfully' };
   }
 
   async getActivity(id: string) {
@@ -55,5 +61,25 @@ export class UserService {
     const comments = await this.commentService.commentsByUser(id);
 
     return { data: {likes: data.likes, posts: data.posts, comments} };
+  }
+
+  async enable(id: string) {
+    const user = await this.userModel.findOneAndUpdate({ _id: id, isActive: false }, { isActive: true }, { new: true });
+    
+    if (!user) {
+      throw new NotFoundException('User not found or already enabled');
+    }
+
+    return { message: 'User enabled successfully' };
+  }
+
+  async changeRole(id: string, role: 'admin' | 'user') {
+    const user = await this.userModel.findOneAndUpdate({ _id: id, role: { $ne: role } }, { role }, { new: true });
+    
+    if (!user) {
+      throw new NotFoundException('User not found or already has this role');
+    }
+
+    return { message: 'User role changed successfully' }
   }
 }

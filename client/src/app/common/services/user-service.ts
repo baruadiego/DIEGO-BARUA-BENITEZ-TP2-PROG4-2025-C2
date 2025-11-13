@@ -69,4 +69,31 @@ export class UserService {
         catchError(() => of(null))
       )
   }
+
+  enable(id: string) {
+    return this.http
+      .post<ApiResponse>(`${environment.API_URL}/user/${id}/enable`,{}, { withCredentials: true })
+      .pipe(
+        map((res) => res.statusCode === 200 || res.statusCode === 201),
+        catchError(() => of(false))
+      );
+  }
+
+  disable(id: string) {
+    return this.http
+      .delete<ApiResponse>(`${environment.API_URL}/user/${id}`, { withCredentials: true })
+      .pipe(
+        map((res) => res.statusCode === 200 || res.statusCode === 201),
+        catchError(() => of(false))
+      );
+  }
+
+  changeRole(id: string, role: 'admin' | 'user') {
+    return this.http
+      .patch<ApiResponse>(`${environment.API_URL}/user/${id}/change-role`,{role}, { withCredentials: true })
+      .pipe(
+        map((res) => res.statusCode === 200 || res.statusCode === 201),
+        catchError(() => of(false))
+      );
+  }
 }

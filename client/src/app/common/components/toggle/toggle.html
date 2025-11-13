@@ -1,4 +1,4 @@
 <div class="checkbox-apple">
-  <input class="yep" id="check-apple" type="checkbox">
-  <label for="check-apple"></label>
+  <input class="yep" [id]="getId()" type="checkbox" [checked]="checked()" (click)="actionEmiter()" #toggle>
+  <label [for]="getId()"></label>
 </div>

@@ -14,7 +14,7 @@ export const adminRoutes: Routes = [
     loadComponent: () => import('./pages/admin-register/admin-register').then(m => m.AdminRegister)
   },
   {
-    path: 'statics',
+    path: 'stats',
     loadComponent: () => import('./pages/statics/statics').then(m => m.Statics)
   }
 ]

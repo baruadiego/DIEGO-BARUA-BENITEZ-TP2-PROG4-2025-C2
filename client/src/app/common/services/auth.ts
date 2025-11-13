@@ -84,7 +84,19 @@ export class Auth {
 
           return false;
         }),
-        catchError(() => of(false))
+        catchError((error) => {
+          const status = error.status;
+
+          if (status === 403) {
+            this.toast.showToast('Su cuenta ha sido deshabilitada', 3000, 'error');
+          } else if (status === 401) {
+            this.toast.showToast('Credenciales incorrectas', 3000, 'error');
+          } else {
+            this.toast.showToast('Error al iniciar sesión', 3000, 'error');
+          }
+
+          return of(false);
+        })
       );
   }
 
