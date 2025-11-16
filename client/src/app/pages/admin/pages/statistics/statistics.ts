@@ -19,6 +19,8 @@ import { UserService } from 'src/app/common/services/user-service';
 import { PostService } from 'src/app/common/services/post-service';
 import { User } from 'src/app/common/types/user';
 import { Post } from 'src/app/common/types/post';
+import { groupBy } from 'rxjs';
+import { getDiference } from 'src/app/common/helpers/statistics';
 
 @Component({
   selector: 'app-statistics',
@@ -43,13 +45,14 @@ import { Post } from 'src/app/common/types/post';
 })
 export class statistics {
   statService = inject(StatsService);
-  userService = inject(UserService);
-  postService = inject(PostService);
 
   static = signal<{ [key: string]: number }>({});
+  typeOfChart = signal<'bar' | 'line'>('line');
   filter = signal<'posts' | 'comments' | ''>('');
-  users = signal<User[]>([]);
-  posts = signal<Post[]>([]);
+  title = signal<string>('');
+  label = signal<string>('Publicaciones');
+  axisXLabel = signal<string>('Día del Mes');
+
   minDate = new Date(2023, 0, 1); // 1 de enero de 2023
   maxDate = new Date();
 
@@ -57,43 +60,22 @@ export class statistics {
     fromDate: new FormControl('', [Validators.required, dateRangeValidator(this.minDate, this.maxDate)]),
     toDate: new FormControl('', [Validators.required, dateRangeValidator(this.minDate, this.maxDate)]),
     type: new FormControl('', [Validators.required, Validators.pattern('^(posts|comments)$')]),
-    filter: new FormControl(''),
+    groupBy: new FormControl(''),
   });
 
   constructor() {
-    this.userService.getUsers().subscribe((res) => {
-      if (res) {
-        this.users.set(res);
-      }
-    })
+    const today = new Date();
+    const oneMonthAgo = new Date(
+      today.getFullYear(), today.getMonth() - 1, today.getDate()
+    );
 
-    this.postService.getAllPosts().subscribe((res) => {
-      if (res) {
-        this.posts.set(res.posts!);
-      }
-    })
+    this.title.set('Publicaciones desde el ' + oneMonthAgo.toLocaleDateString('es-ES') + ' hasta el ' + today.toLocaleDateString('es-ES'));
 
     this.statService
-      .getCommentStat({
-        userId: '69027b008beb1737f38e4a3f',
-        startDate: '2025-11-01',
-        endDate: '2025-11-01',
+      .getPostStat({
+        startDate: oneMonthAgo.toISOString(),
+        endDate: today.toISOString(),
         groupBy: 'dayOfMonth',
-      })
-      .subscribe((res) => {
-        if (res) {
-          this.static.set(res);
-        }
-      });
-  }
-
-  actualizar() {
-    this.statService
-      .getCommentStat({
-        userId: '69027b008beb1737f38e4a3f',
-        startDate: '2025-11-01',
-        endDate: '2025-11-01',
-        groupBy: 'day',
       })
       .subscribe((res) => {
         if (res) {
@@ -104,19 +86,74 @@ export class statistics {
 
   changeFilter() {
     this.filter.set(this.filterForm.value.type as 'posts' | 'comments' | '');
+    this.filterForm.get('groupBy')?.setValue('');
+  }
+
+  updateTitle(){
+    const fromDate = new Date(this.filterForm.value.fromDate!).toLocaleDateString('es-ES');
+    const toDate = new Date(this.filterForm.value.toDate!).toLocaleDateString('es-ES');
+
+    let title = (this.filter() === 'posts' ? 'Publicaciones' : 'Comentarios') + ' desde el ' + fromDate + ' hasta el ' + toDate;
+
+    if(this.filterForm.value.groupBy && this.filterForm.value.groupBy !== ''){
+      title += ' agrupados por ' + (this.filterForm.value.groupBy === 'user' ? 'usuarios' : 'titulos de publicaciones');
+    }
+
+    return title;
+  }
+
+  changeAxisLabel(groupBy: string) {
+    
+    switch (groupBy) {
+      case 'year':
+        this.axisXLabel.set('Año');
+        break;
+      case 'month':
+        this.axisXLabel.set('Mes');
+        break;
+      case 'dayOfMonth':
+        this.axisXLabel.set('Día del Mes');
+        break;
+      case 'day':
+        this.axisXLabel.set('Día de la Semana');
+        break;
+      case 'user':
+        this.axisXLabel.set('Username');
+        break;
+      case 'post':
+        this.axisXLabel.set('Título de la Publicación');
+        break;
+    }
+
   }
 
   getStat(){
-    console.log(this.filterForm.value);
     const data = this.filterForm.value;
+    data.toDate = new Date(new Date(data.toDate!).setHours(23,59,59,999)).toISOString().split('T')[0];
+
+    this.title.set(this.updateTitle());
+
+    if(data.groupBy === ''){
+      this.typeOfChart.set('line');
+      data.groupBy = getDiference(data.fromDate!, data.toDate!);
+    }else {
+      this.typeOfChart.set('bar');
+    }
+
+    this.changeAxisLabel(data.groupBy!);
+    
+    if (this.filter() === 'posts') {
+      this.label.set('Publicaciones');
+    } else if (this.filter() === 'comments') {
+      this.label.set('Comentarios');
+    }
 
     if(this.filter() === 'comments'){
       this.statService
         .getCommentStat({
-          postId: data.filter!,
           startDate: data.fromDate!,
           endDate: data.toDate!,
-          groupBy: 'dayOfMonth',
+          groupBy: data.groupBy!,
         })
         .subscribe((res) => {
           if (res) {
@@ -126,10 +163,9 @@ export class statistics {
     }else if(this.filter() === 'posts'){
       this.statService
         .getPostStat({
-          userId: data.filter!,
           startDate: data.fromDate!,
           endDate: data.toDate!,
-          groupBy: 'year',
+          groupBy: data.groupBy!,
         })
         .subscribe((res) => {
           if (res) {

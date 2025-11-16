@@ -41,13 +41,8 @@ export class AuthController {
   @Post('register')
   async register(
     @Body() createUserDto: CreateUserDto,
-    @Res({ passthrough: true }) res: Response,
   ) {
-    const { data, accessToken } = await this.authService.register(createUserDto);
-
-    this.setJwt(res, accessToken, ACCESS_TOKEN_TIME);
-
-    return { data };
+    return await this.authService.register(createUserDto);
   }
 
   @Post('logout')

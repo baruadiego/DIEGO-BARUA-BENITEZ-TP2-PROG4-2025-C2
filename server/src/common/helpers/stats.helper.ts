@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { GroupBy } from 'src/modules/statistics/dto/stat.dto';
 
 export const meses = [
@@ -41,6 +42,12 @@ export const makeGroupBy = (groupBy?: GroupBy) => {
     case GroupBy.YEAR:
       response = { $year: '$localCreatedAt' };
       break;
+    case GroupBy.USER:
+      response = { author: '$author.userName' };
+      break;
+    case GroupBy.POST:
+      response = { postId: '$post.title' };
+      break;
     default:
       response = { $month: '$localCreatedAt' };
       break;
@@ -56,7 +63,6 @@ export const makeResponse = (
   endDate?: string,
 ) => {
   let result = {};
-
   switch (groupBy) {
     case GroupBy.YEAR:
       result = {};
@@ -103,6 +109,34 @@ export const makeResponse = (
         const diaNombre = dias[p._id - 1];
         result[diaNombre] = p.total;
       }
+      break;
+
+    case GroupBy.USER:
+      result = posts.reduce(
+        (acc, item) => {
+          const author = Array.isArray(item._id?.author)
+            ? item._id.author[0]
+            : 'unknown';
+
+          acc[author] = item.total;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
+      break;
+    
+    case GroupBy.POST:
+      result = posts.reduce(
+        (acc, item) => {
+          const postId = Array.isArray(item._id?.postId)
+            ? item._id.postId[0]
+            : 'unknown';
+
+          acc[postId] = item.total;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
       break;
 
     default:

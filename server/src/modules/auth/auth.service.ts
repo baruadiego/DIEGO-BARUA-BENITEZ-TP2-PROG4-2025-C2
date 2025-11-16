@@ -60,15 +60,13 @@ export class AuthService {
     newUser: CreateUserDto,
   ): Promise<{
     data: CreateUserDto;
-    accessToken: string;
   }> {
     newUser.password = await bcrypt.hash(newUser.password, this.saltRounds);
     const document = new this.userModel(newUser);
     const user = await document.save();
 
     return {
-      data: Mapper.toDto<CreateUserDto>(user, CreateUserDto.keys),
-      accessToken: this.createToken(user),
+      data: Mapper.toDto<CreateUserDto>(user, CreateUserDto.keys)
     }
   }
 

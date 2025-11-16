@@ -5,16 +5,10 @@ export enum GroupBy {
   DAY_OF_MONTH = 'dayOfMonth',
   MONTH = 'month',
   YEAR = 'year',
+  USER = 'user',
+  POST = 'post',
 };
 export class StatDto{
-  @IsOptional()
-  @IsString({ message: 'User ID must be a string' })
-  userId: string;
-
-  @IsOptional()
-  @IsString({ message: 'Post ID must be a string' })
-  postId: string;
-
   @IsDateString()
   startDate: string;
 

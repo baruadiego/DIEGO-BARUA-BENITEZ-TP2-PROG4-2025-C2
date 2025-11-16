@@ -102,38 +102,55 @@ export class CommentService {
   }
 
   async countCommentsByPeriod(statDto: StatDto) {
-      const timezoneOffset = -3;
-      const groupBy = makeGroupBy(statDto.groupBy);
-  
-      let match = {};
-      if (statDto.userId) {
-        match = { ...match, author: statDto.userId };
-      }
-  
-      const posts = await this.commentModel.aggregate([
-        { $match: match },
-        {
-          $addFields: {
-            localCreatedAt: {
-              $dateAdd: {
-                startDate: '$createdAt',
-                unit: 'hour',
-                amount: timezoneOffset,
-              },
+    const timezoneOffset = -3;
+    const groupBy = makeGroupBy(statDto.groupBy);
+
+    const comments = await this.commentModel.aggregate([
+      {
+        $match: {
+          isDeleted: false,
+          createdAt: {
+            $gte: new Date(statDto.startDate),
+            $lte: new Date(statDto.endDate),
+          },
+        },
+      },
+      {
+        $addFields: {
+          localCreatedAt: {
+            $dateAdd: {
+              startDate: '$createdAt',
+              unit: 'hour',
+              amount: timezoneOffset,
             },
           },
+          postIdObjectId: { $toObjectId: '$postId' },
         },
-        {
-          $group: {
-            _id: groupBy,
-            total: { $sum: 1 },
-          },
+      },
+      {
+        $lookup: {
+          from: 'posts',
+          localField: 'postIdObjectId',
+          foreignField: '_id',
+          as: 'post',
+        }
+      },
+      {
+        $group: {
+          _id: groupBy,
+          total: { $sum: 1 },
         },
-        { $sort: { _id: 1 } },
-      ]);
-  
-      const result = makeResponse(posts, statDto.groupBy, statDto.startDate, statDto.endDate);
-  
-      return { data: result };
-    }
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    const result = makeResponse(
+      comments,
+      statDto.groupBy,
+      statDto.startDate,
+      statDto.endDate,
+    );
+
+    return { data:  result };
+  }
 }

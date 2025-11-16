@@ -210,13 +210,16 @@ export class PostService {
     const timezoneOffset = -3;
     const groupBy = makeGroupBy(statDto.groupBy);
 
-    let match = {};
-    if (statDto.userId) {
-      match = {author: statDto.userId};
-    }
-
     const posts = await this.postModel.aggregate([
-      { $match: match },
+      {
+        $match: {
+          isDeleted: false,
+          createdAt: {
+            $gte: new Date(statDto.startDate),
+            $lte: new Date(statDto.endDate),
+          },
+        },
+      },
       {
         $addFields: {
           localCreatedAt: {
@@ -226,7 +229,16 @@ export class PostService {
               amount: timezoneOffset,
             },
           },
+          authorObjectId: { $toObjectId: '$author' },
         },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'authorObjectId',
+          foreignField: '_id',
+          as: 'author',
+        }
       },
       {
         $group: {
@@ -237,8 +249,13 @@ export class PostService {
       { $sort: { _id: 1 } },
     ]);
 
-    const result = makeResponse(posts, statDto.groupBy, statDto.startDate, statDto.endDate);
+    const result = makeResponse(
+      posts,
+      statDto.groupBy,
+      statDto.startDate,
+      statDto.endDate,
+    );
 
-    return { data: result };
+    return { data:  result };
   }
 }

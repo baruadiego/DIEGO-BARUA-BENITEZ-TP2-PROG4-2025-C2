@@ -155,7 +155,7 @@ export class Register {
         if (!this.adminRegister()) {
           this.router.navigate(['/login']);
         }else{
-          this.step.set(1);
+          this.router.navigate(['/admin/users']);
         }
       } else {
         this.toastify.showToast('Ocurrio un error. Intente nuevamente', 3000, 'error');
