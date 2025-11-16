@@ -15,6 +15,6 @@ export const adminRoutes: Routes = [
   },
   {
     path: 'stats',
-    loadComponent: () => import('./pages/statics/statics').then(m => m.Statics)
+    loadComponent: () => import('./pages/statistics/statistics').then(m => m.statistics)
   }
 ]

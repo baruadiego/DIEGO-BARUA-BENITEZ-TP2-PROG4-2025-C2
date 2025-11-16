@@ -35,8 +35,6 @@ export class Auth {
         if (result.isConfirmed) {
           this.refreshToken().subscribe((res) => {
             if (res) {
-              console.log('a');
-
               this.throwRefreshTimer();
               this.toast.showToast('Sesión extendida con exito', 3000, 'success');
             }
@@ -108,7 +106,6 @@ export class Auth {
       .pipe(
         map((response) => {
           if (response.statusCode === 200 || response.statusCode === 201) {
-            localStorage.setItem('user', JSON.stringify(response.data!));
             return true;
           }
 

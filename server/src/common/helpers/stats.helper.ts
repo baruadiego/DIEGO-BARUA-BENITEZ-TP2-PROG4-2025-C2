@@ -1,4 +1,4 @@
-import { GroupBy } from 'src/modules/statics/dto/stat.dto';
+import { GroupBy } from 'src/modules/statistics/dto/stat.dto';
 
 export const meses = [
   'enero',

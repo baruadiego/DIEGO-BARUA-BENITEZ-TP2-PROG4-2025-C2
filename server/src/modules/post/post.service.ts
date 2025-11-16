@@ -3,8 +3,8 @@ import { PostDto } from './dto/post.dto';
 import { Model } from 'mongoose';
 import { Post } from './entities/post.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import { StatDto } from '../statics/dto/stat.dto';
-import { GroupBy } from '../statics/dto/stat.dto';
+import { StatDto } from '../statistics/dto/stat.dto';
+import { GroupBy } from '../statistics/dto/stat.dto';
 import {
   dias,
   makeGroupBy,
@@ -211,8 +211,8 @@ export class PostService {
     const groupBy = makeGroupBy(statDto.groupBy);
 
     let match = {};
-    if (statDto.postId) {
-      match = {postId: statDto.postId};
+    if (statDto.userId) {
+      match = {author: statDto.userId};
     }
 
     const posts = await this.postModel.aggregate([

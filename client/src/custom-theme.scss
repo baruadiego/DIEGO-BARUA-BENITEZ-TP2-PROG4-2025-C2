@@ -23,3 +23,38 @@ html {
     calendar-container-background-color: white,
   ));
 }
+
+.statPicker {
+  @include mat.form-field-overrides((
+    outlined-outline-color: #4a5565,
+    outlined-hover-outline-color: rgb(56, 159, 255),
+    outlined-focus-outline-color: rgb(56, 159, 255), // color de enfoque (ámbar)
+    outlined-error-outline-color: #ff6f61,
+
+    outlined-input-text-color: #ffffff,
+    outlined-input-text-placeholder-color: rgb(255, 255, 255),
+
+    outlined-label-text-color: rgba(255, 255, 255, 0.7),
+    outlined-focus-label-text-color: rgb(56, 159, 255),
+    outlined-hover-label-text-color: rgb(56, 159, 255),
+    outlined-error-label-text-color: #ff6f61,
+
+    outlined-caret-color: #ffb74d,
+
+    trailing-icon-color: #ffb74d,
+    disabled-trailing-icon-color: rgb(255, 255, 255),
+
+    error-text-color: #ff6f61,
+    subscript-text-size: 0.75rem,
+
+    outlined-outline-width: 1px,
+    outlined-focus-outline-width: 2px,
+    outlined-container-shape: 8px,
+  ));
+
+  @include mat.datepicker-overrides((
+    toggle-icon-color: #ffffff,
+    toggle-active-state-icon-color: rgb(56, 159, 255),
+  ));
+}
+

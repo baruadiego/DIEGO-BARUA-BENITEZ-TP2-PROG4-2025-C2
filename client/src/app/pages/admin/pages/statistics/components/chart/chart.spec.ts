@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Statics } from './statics';
+import { Chart } from './chart';
 
-describe('Statics', () => {
-  let component: Statics;
-  let fixture: ComponentFixture<Statics>;
+describe('Chart', () => {
+  let component: Chart;
+  let fixture: ComponentFixture<Chart>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Statics]
+      imports: [Chart]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Statics);
+    fixture = TestBed.createComponent(Chart);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

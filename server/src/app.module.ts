@@ -8,7 +8,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { SupabaseModule } from './modules/supabase/supabase.module';
 import { PostModule } from './modules/post/post.module';
 import { CommentModule } from './modules/comment/comment.module';
-import { StaticsModule } from './modules/statics/statics.module';
+import { statisticsModule } from './modules/statistics/statistics.module';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { StaticsModule } from './modules/statics/statics.module';
     SupabaseModule,
     PostModule,
     CommentModule,
-    StaticsModule,
+    statisticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

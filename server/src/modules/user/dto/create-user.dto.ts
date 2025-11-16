@@ -6,6 +6,7 @@ import {
   MinLength,
   MaxLength,
   IsOptional,
+  IsBoolean,
 } from 'class-validator';
 import { User, UserRole } from '../entities/user.entity';
 
@@ -23,6 +24,7 @@ export class CreateUserDto {
     'isActive',
   ];
   
+  @IsOptional()
   _id?: string;
 
   @IsString({ message: 'Name must be a string' })
@@ -61,5 +63,7 @@ export class CreateUserDto {
   @IsString({ message: 'Image path must be a string' })
   imagePath: string;
 
+  @IsOptional()
+  @IsBoolean({ message: 'isActive must be a boolean value' })
   isActive?: boolean;
 }

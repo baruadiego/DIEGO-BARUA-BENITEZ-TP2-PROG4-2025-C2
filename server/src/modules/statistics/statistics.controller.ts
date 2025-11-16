@@ -4,7 +4,7 @@ import { StatDto } from './dto/stat.dto';
 import { CommentService } from '../comment/comment.service';
 
 @Controller('stats')
-export class StaticsController {
+export class statisticsController {
   constructor(private readonly postsService: PostService,
     private readonly commentService: CommentService
   ) {}

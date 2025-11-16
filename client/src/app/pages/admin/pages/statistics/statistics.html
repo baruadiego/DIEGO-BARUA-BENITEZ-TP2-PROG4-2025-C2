@@ -1,0 +1,64 @@
+<div class="w-full p-2 flex flex-col justify-between items-center">
+  <form [formGroup]="filterForm" class="flex gap-4 w-full max-w-5xl" (ngSubmit)="getStat()">
+    <mat-form-field appearance="outline" class="w-full statPicker">
+      <mat-date-range-input [rangePicker]="rangePicker" [formGroup]="filterForm" [min]="minDate" [max]="maxDate">
+        <input matStartDate formControlName="fromDate" placeholder="Desde" [min]="minDate" />
+        <input matEndDate formControlName="toDate" placeholder="Hasta" [max]="maxDate"/>
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+      <mat-date-range-picker #rangePicker></mat-date-range-picker>
+
+      @if(filterForm.controls.fromDate.hasError('required')){
+      <mat-error> La fecha de inicio es obligatoria. </mat-error>
+      } @if(filterForm.controls.fromDate.hasError('outOfRange')){
+      <mat-error> La fecha minima es 01/01/2023. </mat-error>
+      } @if(filterForm.controls.toDate.hasError('required')){
+      <mat-error> La fecha de fin es obligatoria. </mat-error>
+      } @if(filterForm.controls.toDate.hasError('outOfRange')){
+      <mat-error> La fecha maxima es {{maxDate.toLocaleDateString('es-ES')}}. </mat-error>
+      }
+    </mat-form-field>
+
+    <select
+      formControlName="type"
+      (change)="changeFilter()"
+      class="bg-background border h-fit border-gray-600 w-full text-gray-200 text-lg rounded-lg p-4 outline-none focus:ring-2 focus:ring-[#60a5fa] cursor-pointer"
+    >
+      <option value="" disabled>Seleccionar tipo</option>
+      <option value="posts">Posts</option>
+      <option value="comments">Comentarios</option>
+    </select>
+
+    @if (filter() === 'posts') {
+    <select
+      formControlName="filter"
+      class="bg-background border border-gray-600 w-full h-fit text-gray-200 text-lg rounded-lg p-4 outline-none focus:ring-2 focus:ring-[#60a5fa] cursor-pointer"
+    >
+      <option value="">Todos los usuarios</option>
+      @for (user of users(); track $index) {
+        <option [value]="user._id">{{ user.name }} {{ user.lastname }}</option>
+      }
+    </select>
+    } @else if (filter() === 'comments') {
+    <select
+      formControlName="filter"
+      class="bg-background border border-gray-600 w-full h-fit text-gray-200 text-lg rounded-lg p-4 outline-none focus:ring-2 focus:ring-[#60a5fa] cursor-pointer"
+    >
+      <option value="">Todos los posts</option>
+      @for (post of posts(); track $index) {
+        <option [value]=" post._id">{{ post.title }}</option>
+      }
+    </select>
+    }
+
+    <button
+          class="w-full p-4 text-white bg-[#194980] rounded-2xl enabled:hover:scale-105 transition transform duration-300 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 enabled:cursor-pointer disabled:opacity-50 uppercase font-bold h-fit"
+          type="submit"
+          [disabled]="!filterForm.valid || !filterForm.valid"
+        >
+          Buscar
+        </button>
+  </form>
+
+  <app-chart class="h-full w-full max-w-7xl" [data]="static()"></app-chart>
+</div>

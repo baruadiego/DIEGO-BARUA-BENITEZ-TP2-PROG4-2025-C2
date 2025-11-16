@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
-import { backService } from './servicioBack';
+import { Component } from '@angular/core';
 import { RouterOutlet } from "@angular/router";
 
 export type person = {
@@ -17,10 +15,5 @@ export type person = {
   styleUrl: './app.css'
 })
 export class App {
-  server = inject(backService);
-  protected readonly title = signal('client');
-
-  request() {
-    this.server.getPerson('45000123');
-  }
+  
 }

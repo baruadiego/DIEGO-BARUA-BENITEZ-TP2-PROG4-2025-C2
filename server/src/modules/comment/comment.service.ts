@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment } from './entities/comment.entity';
 import { PostService } from '../post/post.service';
-import { StatDto } from '../statics/dto/stat.dto';
+import { StatDto } from '../statistics/dto/stat.dto';
 import { makeGroupBy, makeResponse } from 'src/common/helpers/stats.helper';
 
 @Injectable()
