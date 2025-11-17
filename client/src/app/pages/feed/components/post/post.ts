@@ -9,10 +9,14 @@ import { NgClass } from "@angular/common";
 import { DateStringPipe } from 'src/app/common/pipes/date-string-pipe';
 import { PostMenu } from "./components/post-menu/post-menu";
 import { ToastifyService } from 'src/app/common/services/toastify';
+import { LinkPipe } from 'src/app/common/pipes/link-pipe';
+import { Hover } from 'src/app/common/directives/hover';
+import { UserDetail } from "./components/user-detail/user-detail";
+import { HoverToggleDirective } from "src/app/common/directives/hover-toggle";
 
 @Component({
   selector: 'app-post',
-  imports: [Avatar, LikeToggleDirective, NgClass, DateStringPipe, PostMenu],
+  imports: [Avatar, LikeToggleDirective, NgClass, DateStringPipe, PostMenu, LinkPipe, Hover, UserDetail, HoverToggleDirective],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })

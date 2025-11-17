@@ -44,3 +44,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-radius: 0.5rem !important;
   padding: 0.5rem 1rem !important;
 }
+
+.hover-dark {
+  @apply bg-[#191e22] rounded-lg transition-colors duration-200 ease-in;
+}

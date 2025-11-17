@@ -11,16 +11,17 @@ import {
 } from '@angular/core';
 import { Comment } from 'src/app/common/types/comment';
 import { Avatar } from '../../../avatar/avatar';
-import { DateStringPipe } from 'src/app/common/pipes/date-string-pipe';
+import { DateCommentStringPipe } from 'src/app/common/pipes/date-string-comment-pipe';
 import { User } from 'src/app/common/types/user';
 import { PostMenu } from '../../../post/components/post-menu/post-menu';
 import { CommentService } from 'src/app/common/services/comment-service';
 import { ToastifyService } from 'src/app/common/services/toastify';
 import { FormsModule } from '@angular/forms';
+import { Hover } from 'src/app/common/directives/hover';
 
 @Component({
   selector: 'app-comment',
-  imports: [Avatar, DateStringPipe, PostMenu, FormsModule],
+  imports: [Avatar, DateCommentStringPipe, PostMenu, FormsModule, Hover],
   templateUrl: './comment.html',
   styleUrl: './comment.css',
 })

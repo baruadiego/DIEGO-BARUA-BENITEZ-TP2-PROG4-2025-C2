@@ -3,10 +3,11 @@ import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Renderer2, ElementRef } from '@angular/core';
 import { UserService } from 'src/app/common/services/user-service';
+import { Hover } from "src/app/common/directives/hover";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [NgClass, RouterLink],
+  imports: [NgClass, RouterLink, Hover],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

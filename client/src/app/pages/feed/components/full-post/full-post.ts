@@ -12,10 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { ToastifyService } from 'src/app/common/services/toastify';
 import { A11yModule } from '@angular/cdk/a11y';
 import { NgClass } from "@angular/common";
+import { LinkPipe } from 'src/app/common/pipes/link-pipe';
 
 @Component({
   selector: 'app-full-post',
-  imports: [Avatar, DateStringPipe, CommentComponent, FormsModule, A11yModule, NgClass],
+  imports: [Avatar, DateStringPipe, CommentComponent, FormsModule, A11yModule, NgClass, LinkPipe],
   templateUrl: './full-post.html',
   styleUrl: './full-post.css',
 })

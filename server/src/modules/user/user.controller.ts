@@ -36,11 +36,9 @@ export class UserController {
     return this.postService.findAll(id, page, limit);
   }
 
-  @Get('activity')
+  @Get(':id/activity')
   @UseGuards(AuthCookieGuard)
-  getUserActivity(@Req() req: Request) {
-    const id = (req as any).user['id'];
-
+  getUserActivity(@Req() req: Request, @Param('id') id: string) {
     return this.userService.getActivity(id);
   }
 

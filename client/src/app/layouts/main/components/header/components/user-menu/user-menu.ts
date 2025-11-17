@@ -4,10 +4,11 @@ import { UserService } from 'src/app/common/services/user-service';
 import { Auth } from 'src/app/common/services/auth';
 import { Router } from '@angular/router';
 import { User } from 'src/app/common/types/user';
+import { Hover } from "src/app/common/directives/hover";
 
 @Component({
   selector: 'app-user-menu',
-  imports: [Profile],
+  imports: [Profile, Hover],
   templateUrl: './user-menu.html',
   styleUrl: './user-menu.css',
 })

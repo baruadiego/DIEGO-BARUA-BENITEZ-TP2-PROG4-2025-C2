@@ -6,24 +6,27 @@
   <div class="flex flex-col gap-1 border-b border-gray-700 pb-4">
     <p>Publicaciones</p>
     <button
-      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+      class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer"
       routerLink="/feed"
+      appHover
     >
       <i class="bi bi-clock-history text-xl"></i>
       <p class="text-sm text-gray-300">Más Recientes</p>
     </button>
 
     <button
-      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+      class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer"
       routerLink="/feed/trends"
+      appHover
     >
       <i class="bi bi-graph-up-arrow text-xl"></i>
       <p class="text-sm text-gray-300">Tendencias</p>
     </button>
 
     <button
-      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+      class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer"
       routerLink="/new-post"
+      appHover
     >
       <i class="bi bi-plus-square text-xl"></i>
       <p class="text-sm text-gray-300">Crear</p>
@@ -33,8 +36,9 @@
   <div class="flex flex-col">
     <p>Administración</p>
     <button
-      class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+      class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer"
       routerLink="/profile"
+      appHover
     >
       <i class="bi bi-person-circle text-xl"></i>
       <p class="text-sm text-gray-300">Mi Perfil</p>
@@ -43,8 +47,9 @@
     @if(currentUser?.role === 'admin') {
       
       <button
-        class="flex items-center justify-between hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer"
+        class="flex items-center justify-between py-1 px-2 rounded-md cursor-pointer"
         (click)="toggleAdmin()"
+        appHover
       >
         <div class="flex gap-4 items-center">
           <i class="bi bi-shield-lock text-xl"></i>
@@ -60,24 +65,27 @@
       @if(showAdminRoutes()){
         <div class="pl-4 w-full scale-in-ver-top" #adminRoutes>
           <button
-            class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
+            class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer w-full"
             routerLink="/admin/users"
+            appHover
           >
             <i class="bi bi-people-fill text-xl"></i>
             <p class="text-sm text-gray-300">Usuarios</p>
           </button>
     
           <button
-            class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
+            class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer w-full"
             routerLink="/admin/register"
+            appHover
           >
             <i class="bi bi-person-plus-fill text-xl"></i>
             <p class="text-sm text-gray-300">Nuevo Usuario</p>
           </button>
     
           <button
-            class="flex gap-4 items-center hover:bg-[#252b30] transition-colors duration-200 p-1 rounded-md cursor-pointer w-full"
+            class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer w-full"
             routerLink="/admin/stats"
+            appHover
           >
             <i class="bi bi-bar-chart-line-fill text-xl"></i>
             <p class="text-sm text-gray-300">Estadisticas</p>

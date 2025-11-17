@@ -45,7 +45,7 @@ export class Profile {
 
   getActivity() {
     this.userService
-      .getActivity()
+      .getActivity(this.currentUser()._id)
       .subscribe((response) => {
         if (response) {
           this.activity.set(response);

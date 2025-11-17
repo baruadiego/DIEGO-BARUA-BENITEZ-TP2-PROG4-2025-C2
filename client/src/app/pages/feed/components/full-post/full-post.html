@@ -24,7 +24,7 @@
 
       <div>
         <p class="text-lg font-semibold capitalize">{{ post()?.title }}</p>
-        <p class="text-gray-300">{{ post()?.content }}</p>
+        <div class="text-gray-300" [innerHTML]="post()?.content! | link"></div>
       </div>
 
       <div class="flex gap-1 items-center">

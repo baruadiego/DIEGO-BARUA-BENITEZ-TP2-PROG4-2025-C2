@@ -56,9 +56,9 @@ export class UserService {
       );
   }
 
-  getActivity() {
+  getActivity(id: string) {
     return this.http
-      .get<ApiResponse>(`${environment.API_URL}/user/activity`, { withCredentials: true })
+      .get<ApiResponse>(`${environment.API_URL}/user/${id}/activity`, { withCredentials: true })
       .pipe(
         map((res) => {
           if(res.statusCode === 200 || res.statusCode === 201){
