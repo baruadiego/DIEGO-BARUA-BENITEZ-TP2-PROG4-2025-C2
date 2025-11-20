@@ -1,15 +1,17 @@
-<div class="flex flex-col gap-2 p-1 px-2"
-  appHover
->
+<div class="flex flex-col gap-2 p-1 px-2" appHover>
   <div class="flex gap-1 items-center">
     <app-avatar [author]="comment()?.author!" [size]="'sm'"></app-avatar>
 
     <div class="flex flex-col w-full">
       <div class="flex justify-between w-full">
-        <div class="flex gap-1 items-center leading-0">
-          <p class="text-sm leading-0">{{ comment()?.author?.userName }}</p>
-          <p class="text-xl leading-0">·</p>
-          <p class="text-gray-300 text-xs leading-0">{{ comment()?.createdAt | dateCommentString }}</p>
+        <div class="flex gap-1 items-center">
+          <p class="text-sm">{{ comment()?.author?.userName }}</p>
+          <p class="text-xl">·</p>
+          <p class="text-gray-300 text-xs">{{ comment()?.createdAt | dateCommentString }}</p>
+          @if(isModified()){
+            <p class="text-xl">·</p>
+            <p class="text-xs text-gray-300">Editado</p>
+          }
         </div>
 
         @if (isSelfComment() || isAdmin()) {
@@ -24,22 +26,18 @@
         </div>
         }
       </div>
-
-      @if(isModified()){
-      <p class="text-xs text-gray-300">Editado</p>
-      }
     </div>
   </div>
 
   @if(!isEditing()){
-    <p>{{ comment()?.content }}</p>
+  <p>{{ comment()?.content }}</p>
   }@else {
-    <textarea 
-      [(ngModel)]="editingContent" 
-      maxlength="180" 
-      #editInput 
-      autofocus
-      (keyup.enter)="updateComment()"
-    ></textarea>
+  <textarea
+    [(ngModel)]="editingContent"
+    maxlength="180"
+    #editInput
+    autofocus
+    (keyup.enter)="updateComment()"
+  ></textarea>
   }
 </div>

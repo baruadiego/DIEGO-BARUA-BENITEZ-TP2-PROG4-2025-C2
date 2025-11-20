@@ -38,6 +38,8 @@ export class FullPost {
   close = output<void>();
   onlytext = signal<boolean>(false)
 
+  updateFeed = output<void>();
+
   content: string = '';
   constructor() {
     this.currentUser.set(this.userService.getUser());
@@ -100,9 +102,11 @@ export class FullPost {
             ...this.post()!,
             likesCount: this.post()!.likesCount + 1,
           });
+          this.updateFeed.emit();
         }
       });
     }
+
   }
 
   unlike() {
@@ -114,6 +118,8 @@ export class FullPost {
             ...this.post()!,
             likesCount: this.post()!.likesCount - 1,
           });
+      
+          this.updateFeed.emit();
         }
       });
     }
@@ -130,6 +136,7 @@ export class FullPost {
         } else {
           this.toastify.showToast('Error al enviar el comentario', 3000, 'error');
         }
+        this.updateFeed.emit();
       });
   }
 }

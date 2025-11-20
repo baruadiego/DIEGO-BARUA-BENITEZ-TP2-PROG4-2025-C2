@@ -48,6 +48,7 @@
           [data]="comment"
           [currentUser]="currentUser()"
           (reload)="reload($event)"
+          (updateFeed)="updateFeed.emit()"
         ></app-comment>
         }
       </div>

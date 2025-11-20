@@ -32,6 +32,7 @@ export class CommentComponent {
 
   currentUser = input<User | null>(null);
   reload = output<boolean>();
+  updateFeed = output<void>();
 
   comment = signal<Comment | null>(null);
   isEditing = signal(false);
@@ -68,6 +69,8 @@ export class CommentComponent {
       } else {
         this.toastify.showToast('Error al eliminar el comentario', 3000, 'error');
       }
+
+      this.updateFeed.emit();
     });
   }
 

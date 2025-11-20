@@ -41,13 +41,17 @@
     <h2 class="text-2xl font-bold text-gray-300 border-y border-gray-700 py-2">Publicaciones</h2>
 
     <div class="w-full flex flex-col justify-center items-center">
-      @for (post of posts(); track $index) {
-        <app-post 
-        [data]="post" 
-        [isLastPost]="isLastPost($index)" 
-        (reload)="reload()"
-        (openPost)="openPost($event)"
-      ></app-post>
+      @if(posts().length > 0){
+        @for (post of posts(); track $index) {
+          <app-post 
+          [data]="post" 
+          [isLastPost]="isLastPost($index)" 
+          (reload)="reload()"
+          (openPost)="openPost($event)"
+        ></app-post>
+        }
+      } @else {
+        <p class="text-xl font-bold py-2 text-gray-300">Aún no hay publicaciones...</p>
       }
     </div>
   </div>

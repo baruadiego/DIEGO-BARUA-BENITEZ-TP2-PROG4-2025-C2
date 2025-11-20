@@ -1,6 +1,6 @@
 
 @if (fullPost()) {
-  <app-full-post [data]="fullPost()" (close)="closePost()"></app-full-post>
+  <app-full-post [data]="fullPost()" (close)="closePost()" (updateFeed)="reload()"></app-full-post>
 }
 
 <div class="p-2 h-full">

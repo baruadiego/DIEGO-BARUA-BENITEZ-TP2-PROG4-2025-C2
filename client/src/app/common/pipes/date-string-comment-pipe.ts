@@ -31,7 +31,7 @@ export class DateCommentStringPipe implements PipeTransform {
     }else if(differenceInSeconds(today, formatedDate) > 0) {
       return differenceInSeconds(today, formatedDate) + ' s';
     }else if(differenceInSeconds(today, formatedDate) === 0) {
-      return 'Hace un momento';
+      return '1 s';
     }
 
     return null;
