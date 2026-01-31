@@ -66,18 +66,21 @@ export class NewPostComponent {
       imagePath: image?.path,
     };
 
-    this.postService.createPost(newPost).subscribe((success) => {
-      if (success) {
+    this.postService.createPost(newPost).subscribe((res => {
+      if (res.success) {
         this.toastService.showToast('Publicación creada con exito', 3000, 'success');
         this.router.navigate(['/feed']);
       } else {
+        if (res.statusCode === 429) {
+          this.toastService.showToast('Límite máximo de publicaciones diarias alcanzado', 3000, 'error');
+        }
         this.toastService.showToast('Ocurrio un error. Intente nuevamente', 3000, 'error');
       }
 
       if (this.formData.valid) {
         this.formData.reset();
       }
-    });
+    }));
   }
 
   resetFileInput() {

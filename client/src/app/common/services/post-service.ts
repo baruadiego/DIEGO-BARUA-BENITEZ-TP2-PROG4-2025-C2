@@ -11,12 +11,12 @@ import { NewPost } from '../types/newPost';
 })
 export class PostService {
   http = inject(HttpClient);
-  createPost(newPost: NewPost) {
+  createPost(newPost: NewPost): Observable<{success: boolean, statusCode: number}> {
     return this.http
       .post<ApiResponse>(`${environment.API_URL}/post`, newPost, { withCredentials: true })
       .pipe(
-        map((res) => res.statusCode === 200 || res.statusCode === 201),
-        catchError(() => of(false))
+        map((res) => ({success: res.statusCode === 200 || res.statusCode === 201, statusCode: res.statusCode ?? 0})),
+        catchError((res) => of({success: false, statusCode: res.statusCode}))
       );
   }
 
