@@ -16,7 +16,7 @@ export class PostService {
       .post<ApiResponse>(`${environment.API_URL}/post`, newPost, { withCredentials: true })
       .pipe(
         map((res) => ({success: res.statusCode === 200 || res.statusCode === 201, statusCode: res.statusCode ?? 0})),
-        catchError((res) => of({success: false, statusCode: res.statusCode}))
+        catchError((res) => of({success: false, statusCode: res.status}))
       );
   }
 
