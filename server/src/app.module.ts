@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -9,6 +9,7 @@ import { SupabaseModule } from './modules/supabase/supabase.module';
 import { PostModule } from './modules/post/post.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { statisticsModule } from './modules/statistics/statistics.module';
+import { IpRateLimitMiddleware } from './common/middlewares/rateLimit';
 
 @Module({
   imports: [
@@ -27,4 +28,13 @@ import { statisticsModule } from './modules/statistics/statistics.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(IpRateLimitMiddleware)
+      .forRoutes(
+        { path: "supabase/upload", method: RequestMethod.ALL },
+        { path: "post", method: RequestMethod.POST },
+      );
+  }
+}

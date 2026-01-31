@@ -1,4 +1,4 @@
-<div class="checkbox-apple">
-  <input class="yep" [id]="getId()" type="checkbox" [checked]="checked()" (click)="actionEmiter()" #toggle>
+<div class="checkbox-apple" [ngClass]="{'disabled': disabled()}">
+  <input class="yep" [id]="getId()" type="checkbox" [checked]="checked()" (click)="actionEmiter()" #toggle [disabled]="disabled()">
   <label [for]="getId()"></label>
 </div>

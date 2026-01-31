@@ -41,6 +41,9 @@ async function bootstrap() {
 
   app.use(cookieParser())
 
+  const server = app.getHttpAdapter().getInstance();
+  server.set("trust proxy", 1);
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

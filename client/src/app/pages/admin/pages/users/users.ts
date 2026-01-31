@@ -13,6 +13,7 @@ import { RouterLink } from "@angular/router";
 })
 export class Users {
   userService = inject(UserService);
+  currentUser = signal<User | null>(null);
   users = signal<User[]>([]);
   toast = inject(ToastifyService)
 
@@ -22,6 +23,8 @@ export class Users {
         this.users.set(res);
       }
     })
+
+    this.currentUser.set(this.userService.getUser());
   }
 
   toggleAction (id: string, disable: boolean) {

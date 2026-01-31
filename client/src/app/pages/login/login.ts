@@ -3,7 +3,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink } from '@angular/router';
 import { Auth } from 'src/app/common/services/auth';
 import { Router } from '@angular/router';
-import Toastify from 'toastify-js';
 
 @Component({
   selector: 'app-login',
@@ -15,20 +14,10 @@ export class Login {
   protected auth = inject(Auth);
   protected router = inject(Router);
 
-  private users = [
-    {
-      email: 'diegobarua03@gmail.com',
-      password: '11152728V',
-    },
-    {
-      email: 'diegobarua.dev@gmail.com',
-      password: '12345678',
-    },
-    {
-      email: 'juan@gmail.com',
-      password: 'prueba123',
-    },
-  ];
+  private userTest = {
+    email: 'test@gmail.com',
+    password: '12345678',
+  };
 
   formData = new FormGroup({
     email: new FormControl('', [
@@ -45,7 +34,7 @@ export class Login {
       this.auth.login(data.email, data.password).subscribe((success) => {
         if (success) {
           this.router.navigate(['/feed']);
-        } 
+        }
 
         if (this.formData.valid) {
           this.formData.reset();
@@ -54,10 +43,10 @@ export class Login {
     }
   }
 
-  autocomplete(user: number) {
+  autocomplete() {
     this.formData.patchValue({
-      email: this.users[user - 1].email,
-      password: this.users[user - 1].password,
+      email: this.userTest.email,
+      password: this.userTest.password,
     });
   }
 }

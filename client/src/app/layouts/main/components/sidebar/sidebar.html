@@ -74,8 +74,9 @@
           </button>
     
           <button
-            class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer w-full"
+            class="flex gap-4 items-center py-1 px-2 rounded-md cursor-pointer w-full disabled:opacity-50"
             routerLink="/admin/register"
+            [disabled]="userService.getUser()?.email === 'test@gmail.com'"
             appHover
           >
             <i class="bi bi-person-plus-fill text-xl"></i>
