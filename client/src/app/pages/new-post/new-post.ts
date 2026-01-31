@@ -71,10 +71,14 @@ export class NewPostComponent {
         this.toastService.showToast('Publicación creada con exito', 3000, 'success');
         this.router.navigate(['/feed']);
       } else {
+        console.log(res);
+        
         if (res.statusCode === 429) {
           this.toastService.showToast('Límite máximo de publicaciones diarias alcanzado', 3000, 'error');
+        } else{
+          this.toastService.showToast('Ocurrio un error. Intente nuevamente', 3000, 'error');
         }
-        this.toastService.showToast('Ocurrio un error. Intente nuevamente', 3000, 'error');
+        
       }
 
       if (this.formData.valid) {
